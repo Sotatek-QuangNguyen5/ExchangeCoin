@@ -53,15 +53,26 @@ func GetBalance() {
 
 func ReceiverBalance(auth *bind.TransactOpts) {
 
-    balance, err := Mycontract.ReceiverBalance(auth)
+    tx, err := Mycontract.ReceiverBalance(auth)
     if err != nil {
         log.Fatal(err)
     }
 
-    fmt.Println("Transaction Hash :", balance.Hash().Hex())
+    fmt.Println("Transaction Hash :", tx.Hash().Hex())
 }
 
-func Joker(auth *bind.TransactOpts) {
+func GetMessageHash(to common.Address, amount *big.Int, message string, nonce *big.Int) {
 
-    Mycontract.
+    res, err := Mycontract.GetMessageHash(nil, to, amount, message, nonce)
+    if err != nil {
+
+        log.Fatal(err)
+    }
+
+    fmt.Print("Message Hash : {")
+    for _, value := range res {
+
+        fmt.Print(value, ", ")
+    }
+    fmt.Println("}")
 }
