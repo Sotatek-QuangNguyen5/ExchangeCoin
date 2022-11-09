@@ -3,7 +3,6 @@ package contract
 import (
 	"fmt"
 	"log"
-	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -41,29 +40,9 @@ func Deploy(auth *bind.TransactOpts, client *ethclient.Client) {
 	Mycontract = instance
 }
 
-func GetBalance() {
+func GetMessageHash(message string) {
 
-    balance, err := Mycontract.GetBalance(nil)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    fmt.Printf("Balance of Contract : %v ether\n", balance.Div(balance, big.NewInt(1e18)))
-}
-
-func ReceiverBalance(auth *bind.TransactOpts) {
-
-    tx, err := Mycontract.ReceiverBalance(auth)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    fmt.Println("Transaction Hash :", tx.Hash().Hex())
-}
-
-func GetMessageHash(to common.Address, amount *big.Int, message string, nonce *big.Int) {
-
-    res, err := Mycontract.GetMessageHash(nil, to, amount, message, nonce)
+    res, err := Mycontract.GetMessageHash(&bind.CallOpts{}, message)
     if err != nil {
 
         log.Fatal(err)
@@ -75,4 +54,24 @@ func GetMessageHash(to common.Address, amount *big.Int, message string, nonce *b
         fmt.Print(value, ", ")
     }
     fmt.Println("}")
+}
+
+func Verify(signer common.Address, message string, signature []byte) {
+
+    res, err := Mycontract.Verify(&bind.CallOpts{}, signer, message, signature)
+    if err != nil {
+
+        log.Fatal("Error Verify : ", err)
+    }
+    fmt.Println("Result : ", res)
+}
+
+func Recover(ethHash [32]byte, signature []byte) {
+
+    res, err := Mycontract.RecoverSigner(&bind.CallOpts{}, ethHash, signature)
+    if err != nil {
+
+        log.Fatal("Error Recover : ", err)
+    }
+    fmt.Println("Address : ", res.Hex())
 }

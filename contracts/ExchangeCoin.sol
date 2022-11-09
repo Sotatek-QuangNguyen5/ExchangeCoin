@@ -2,30 +2,23 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 contract VerifySignature {
-
-    address public creator;
-
-    constructor() {
-
-        creator = msg.sender;
-    }
     
-    function getMessageHash(address _to, uint _amount, string memory _message, uint _nonce) public pure returns(bytes32) {
+    function getMessageHash(string memory _message) public pure returns(bytes32) {
 
-        return keccak256(abi.encodePacked(_to, _amount, _message, _nonce));
+        return keccak256(abi.encodePacked(_message));
     }
 
     function getEthSignedMessageHash(bytes32 _messageHash) public pure returns(bytes32) {
         
-        return keccak256(abi.encodePacked("joker", _messageHash));
+       return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", _messageHash));
     }
 
-    function verify(address _signer, address _to, uint _amount, string memory _message, uint _nonce, bytes memory signature) public pure returns(bool) {
+    function verify(address signer, string memory _message, bytes memory signature) public pure returns(bool) {
         
-        bytes32 messageHash = getMessageHash(_to, _amount, _message, _nonce);
+        bytes32 messageHash = getMessageHash(_message);
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
 
-        return recoverSigner(ethSignedMessageHash, signature) == _signer;
+        return recoverSigner(ethSignedMessageHash, signature) == signer;
     }
 
     function recoverSigner(bytes32 _ethSignedMessageHash, bytes memory _signature) public pure returns(address) {
@@ -39,21 +32,9 @@ contract VerifySignature {
         require(sig.length == 65, "invalid signature length");
         assembly {
 
-            // first 32 bytes, after the length prefix
             r := mload(add(sig, 32))
-            // second 32 bytes
             s := mload(add(sig, 64))
-            // final byte (first byte of the next 32 bytes)
             v := byte(0, mload(add(sig, 96)))
         }
-    }
-
-    function getBalance() public view returns(uint256) {
-
-        return address(this).balance;
-    }
-
-    function receiverBalance() public payable {
-
     }
 }

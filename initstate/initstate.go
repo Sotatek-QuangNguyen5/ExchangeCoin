@@ -1,13 +1,13 @@
 package initstate
 
 import (
+    
 	"context"
 	"crypto/ecdsa"
 	"log"
 	"math/big"
     "fmt"
 	"servercoin/readfile"
-
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -24,7 +24,7 @@ var (
 
 func Init() {
 
-    client, err := ethclient.Dial("HTTP://127.0.0.1:8545")
+    client, err := ethclient.Dial("https://sepolia.infura.io/v3/c4cd8633cc10461cb3ca9b40299e6ac5")
     if err != nil {
         log.Fatal(err)
     }
@@ -87,18 +87,29 @@ func SetNonce() {
 
 func GenerateSignature() {
 
-    // to := common.HexToAddress("0x5B38Da6a701c568545dCfcB03FcB875f56beddC4")
-    // amount := *big.NewInt(1e4)
     message := ([]byte)("oke")
-    // nonce := *big.NewInt(119)
-    // hash := crypto.Keccak256Hash(to.Bytes(), amount.Bytes(), message, nonce.Bytes())
-    hash := crypto.Keccak256Hash(message)
-    fmt.Println("HashHex : ", hash.Hex())
+    hash, ethHash := PacketWithEth(message)
+    fmt.Println("Msg Hash : ", hash.Hex())
+    fmt.Println("ETH Hash : ", ethHash.Hex())
 
-    signature, err := crypto.Sign(hash.Bytes(), privateKeyLocal)
+    signature, err := crypto.Sign(ethHash.Bytes(), privateKeyLocal)
     if err != nil {
         log.Fatal(err)
     }
+    if signature[64] == 0 || signature[64] == 1 {
+        signature[64] += 27
+    }
+
+    // fmt.Println(signature)
 
     fmt.Println("Signature : ", hexutil.Encode(signature))
+}
+
+func PacketWithEth(message []byte) (common.Hash, common.Hash) {
+    hash := crypto.Keccak256Hash(message)
+
+    return hash, crypto.Keccak256Hash(
+        []byte("\x19Ethereum Signed Message:\n32"),
+        hash.Bytes(),
+    )
 }
