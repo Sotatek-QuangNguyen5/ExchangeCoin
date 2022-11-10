@@ -2,6 +2,13 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 contract VerifySignature {
+
+    address public creator;
+
+    constructor() {
+
+        creator = msg.sender;
+    }
     
     function getMessageHash(string memory _message) public pure returns(bytes32) {
 

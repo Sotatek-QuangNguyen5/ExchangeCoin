@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 
 	"servercoin/exchangecoin"
-	"servercoin/readfile"
+	"servercoin/utils"
 )
 
 var (
@@ -19,7 +19,7 @@ var (
 
 func CreateNewContract(auth *bind.TransactOpts, client *ethclient.Client) {
 
-	contractAddress := readfile.ReadContractOne()
+	contractAddress := utils.ReadContract(1)
 	address := common.HexToAddress(contractAddress)
     instance, err := exchangecoin.NewExchangecoin(address, client)
     if err != nil {

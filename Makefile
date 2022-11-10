@@ -5,4 +5,4 @@ abigen:
 	abigen --bin=build/VerifySignature.bin --abi=build/VerifySignature.abi --pkg=exchangecoin --out=exchangecoin/ExchangeCoin.go
 
 run:
-	go run main.go
+	go run main.goj

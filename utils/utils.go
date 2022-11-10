@@ -1,6 +1,7 @@
-package readfile
+package utils
 
 import (
+	
     "bufio"
     "log"
     "os"

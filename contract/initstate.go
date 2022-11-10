@@ -7,7 +7,7 @@ import (
 	"log"
 	"math/big"
     "fmt"
-	"servercoin/readfile"
+	"servercoin/utils"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -30,7 +30,7 @@ func Init() {
     }
     Client = client
 
-	privateKeyString := readfile.ReadPrivateKey()
+	privateKeyString := utils.ReadPrivateKey(1)
 
     privateKey, err := crypto.HexToECDSA(privateKeyString)
     if err != nil {
