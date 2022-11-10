@@ -104,3 +104,69 @@ func ReadUrlRpc(number int) (string) {
 
 	return privateKey
 }
+
+func ReadPublicKey(number int) (string) {
+
+
+    f, err := os.Open("./text/publickey.txt")
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    defer f.Close()
+
+    scanner := bufio.NewScanner(f)
+	var publicKey string
+    cnt := 1
+
+    for scanner.Scan() {
+
+		publicKey = scanner.Text()
+        if cnt == number {
+
+            break
+        }
+        cnt += 1
+    }
+
+    if err := scanner.Err(); err != nil {
+
+        log.Fatal(err)
+    }
+
+	return publicKey
+}
+
+func ReadSignature(number int) (string) {
+
+
+    f, err := os.Open("./text/signature.txt")
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    defer f.Close()
+
+    scanner := bufio.NewScanner(f)
+	var signature string
+    cnt := 1
+
+    for scanner.Scan() {
+
+		signature = scanner.Text()
+        if cnt == number {
+
+            break
+        }
+        cnt += 1
+    }
+
+    if err := scanner.Err(); err != nil {
+
+        log.Fatal(err)
+    }
+
+	return signature
+}
