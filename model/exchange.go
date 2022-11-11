@@ -8,5 +8,5 @@ type Exchange struct {
 	Signature	string
 	Address		string
 	Message		string
-	Amount		int
+	Amount		string
 }

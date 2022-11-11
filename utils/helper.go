@@ -1,19 +1,25 @@
 package utils
 
 import (
-
-	"servercoin/config"
-	"servercoin/repository"
-	"servercoin/service"
+	
+	"math/rand"
 )
 
 
-func RandomMessage() {
+func RandomMessage() string {
 
-	s := service.NewExchangeService(repository.NewExchangeRepository(config.DB))
+	var s string
+	for i := 0; i < 65; i++ {
 
-	for i := 0; i < 32; i++ {
+		val := rand.Intn(62) + 55;
+		if val < 65 {
 
-		
+			val -= 7
+		} else if val > 90 {
+
+			val += 6
+		}
+		s = s + string(val)
 	}
+	return s
 }

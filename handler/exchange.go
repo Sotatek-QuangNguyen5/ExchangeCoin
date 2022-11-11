@@ -1,11 +1,13 @@
 package handler
 
 import (
-
 	"net/http"
+	"servercoin/contract"
 	"servercoin/dto"
 	"servercoin/errs"
 	"servercoin/service"
+	"servercoin/utils"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -55,6 +57,8 @@ func (e ExchangeHandler) CreateExchange() gin.HandlerFunc {
 			WriteError(ctx, errs.ErrorReadRequestBody())
 			return
 		}
+		req.Message = utils.RandomMessage()
+		req.Signature = contract.GenerateSignature(req.Address, req.Message, req.Amount)
 		er := e.service.CreateExchange(req)
 		if er != nil {
 

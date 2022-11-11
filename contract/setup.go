@@ -24,7 +24,8 @@ var (
 
 func Init() {
 
-    client, err := ethclient.Dial("https://sepolia.infura.io/v3/c4cd8633cc10461cb3ca9b40299e6ac5")
+    urlrpc := utils.ReadUrlRpc(1)
+    client, err := ethclient.Dial(urlrpc)
     if err != nil {
         log.Fatal(err)
     }
@@ -85,10 +86,12 @@ func SetNonce() {
     Auth.Nonce = big.NewInt(int64(nonce))
 }
 
-func GenerateSignature() {
+func GenerateSignature(addr string, mess string, am string) string {
 
-    message := ([]byte)("oke")
-    hash, ethHash := PacketWithEth(message)
+    message := ([]byte)(mess)
+    amount := ([]byte)(am)
+    address := ([]byte)(addr)
+    hash, ethHash := PacketWithEth(address, message, amount)
     fmt.Println("Msg Hash : ", hash.Hex())
     fmt.Println("ETH Hash : ", ethHash.Hex())
 
@@ -99,14 +102,14 @@ func GenerateSignature() {
     if signature[64] == 0 || signature[64] == 1 {
         signature[64] += 27
     }
-
+    
     // fmt.Println(signature)
-
     fmt.Println("Signature : ", hexutil.Encode(signature))
+    return hexutil.Encode(signature)
 }
 
-func PacketWithEth(message []byte) (common.Hash, common.Hash) {
-    hash := crypto.Keccak256Hash(message)
+func PacketWithEth(address []byte, message []byte, amount []byte) (common.Hash, common.Hash) {
+    hash := crypto.Keccak256Hash(address, message, amount)
 
     return hash, crypto.Keccak256Hash(
         []byte("\x19Ethereum Signed Message:\n32"),

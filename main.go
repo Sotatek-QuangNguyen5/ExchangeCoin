@@ -1,7 +1,7 @@
 package main
 
 import (
-
+	"servercoin/contract"
 	"servercoin/router"
 )
 
@@ -10,5 +10,9 @@ import (
 
 func main() {
 
+	go func ()  {
+		
+		contract.Coin()
+	}()
 	router.Start()
 }

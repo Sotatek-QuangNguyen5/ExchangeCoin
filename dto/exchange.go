@@ -7,7 +7,7 @@ type Exchange struct {
 	Message		string		`json:"message"`
 	Address		string		`json:"address"`
 	Signature	string		`json:"signature"`
-	Amount		int			`json:"amount"`
+	Amount		string		`json:"amount"`
 }
 
 func MExchangeToDExchange(exchange *model.Exchange) *Exchange {

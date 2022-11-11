@@ -1,11 +1,11 @@
 package contract
 
 import (
-	"fmt"
 
+	"fmt"
+	"servercoin/utils"
 	"bufio"
 	"os"
-
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -36,19 +36,23 @@ func handleChoice(choice int) {
 		GetMessageHash(message)
 	} else if choice == 6 {
 
-		GenerateSignature()
+		v := GenerateSignature("1", "2", "3")
+		_ = v
 	} else if choice == 7 {
 
-		signer := common.HexToAddress("0xC74cd3c249d2cEe4c11A894753213d2714962a7E")
+		address := utils.ReadPublicKey(1)
+		signer := common.HexToAddress(address)
 		message := "oke"
-		signature := common.FromHex("0xf3deaad8dd68d10c98051a10ba5309ec865d6323b79c56f4eca400247cd7f734060a40daad21363663c256eeed4f925c220f2edf135921e79526c798c75e77ad1c")
+		utils.RandomMessage()
+		signatureString := utils.ReadSignature(1)
+		signature := common.FromHex(signatureString)
 		// fmt.Println(signature)
 		Verify(signer, message, signature)
 	} else if choice == 8 {
 
 		ethHash := common.HexToHash("0xb2767c9a44e1f883e8d99170ee032fcca1d248b6744609b78a9f0a11658329d4")
-		signature := common.FromHex("0xf3deaad8dd68d10c98051a10ba5309ec865d6323b79c56f4eca400247cd7f734060a40daad21363663c256eeed4f925c220f2edf135921e79526c798c75e77ad1c")
-		// fmt.Println(signature)
+		signatureString := utils.ReadSignature(1)
+		signature := common.FromHex(signatureString)
 		Recover(ethHash, signature)
 	} else {
 
