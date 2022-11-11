@@ -30,8 +30,8 @@ var (
 
 // ExchangecoinMetaData contains all meta data concerning the Exchangecoin contract.
 var ExchangecoinMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_messageHash\",\"type\":\"bytes32\"}],\"name\":\"getEthSignedMessageHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_message\",\"type\":\"string\"}],\"name\":\"getMessageHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_ethSignedMessageHash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes\",\"name\":\"_signature\",\"type\":\"bytes\"}],\"name\":\"recoverSigner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"sig\",\"type\":\"bytes\"}],\"name\":\"splitSignature\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"signer\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_message\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"name\":\"verify\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}]",
-	Bin: "0x608060405234801561001057600080fd5b50610a08806100206000396000f3fe608060405234801561001057600080fd5b50600436106100575760003560e01c80632dd34f0f1461005c57806397aba7f91461008c578063a7bb5803146100bc578063b446f3b2146100ee578063fa5408011461011e575b600080fd5b6100766004803603810190610071919061053c565b61014e565b60405161008391906105e2565b60405180910390f35b6100a660048036038101906100a19190610633565b6101ac565b6040516100b3919061069e565b60405180910390f35b6100d660048036038101906100d191906106b9565b61021b565b6040516100e59392919061072d565b60405180910390f35b61010860048036038101906101039190610764565b610283565b60405161011591906107ad565b60405180910390f35b610138600480360381019061013391906107c8565b6102b3565b60405161014591906107ad565b60405180910390f35b60008061015a84610283565b90506000610167826102b3565b90508573ffffffffffffffffffffffffffffffffffffffff1661018a82866101ac565b73ffffffffffffffffffffffffffffffffffffffff1614925050509392505050565b6000806000806101bb8561021b565b925092509250600186828585604051600081526020016040526040516101e494939291906107f5565b6020604051602081039080840390855afa158015610206573d6000803e3d6000fd5b50505060206040510351935050505092915050565b60008060006041845114610264576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161025b90610897565b60405180910390fd5b6020840151925060408401519150606084015160001a90509193909250565b6000816040516020016102969190610928565b604051602081830303815290604052805190602001209050919050565b6000816040516020016102c691906109ac565b604051602081830303815290604052805190602001209050919050565b6000604051905090565b600080fd5b600080fd5b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000610322826102f7565b9050919050565b61033281610317565b811461033d57600080fd5b50565b60008135905061034f81610329565b92915050565b600080fd5b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6103a88261035f565b810181811067ffffffffffffffff821117156103c7576103c6610370565b5b80604052505050565b60006103da6102e3565b90506103e6828261039f565b919050565b600067ffffffffffffffff82111561040657610405610370565b5b61040f8261035f565b9050602081019050919050565b82818337600083830152505050565b600061043e610439846103eb565b6103d0565b90508281526020810184848401111561045a5761045961035a565b5b61046584828561041c565b509392505050565b600082601f83011261048257610481610355565b5b813561049284826020860161042b565b91505092915050565b600067ffffffffffffffff8211156104b6576104b5610370565b5b6104bf8261035f565b9050602081019050919050565b60006104df6104da8461049b565b6103d0565b9050828152602081018484840111156104fb576104fa61035a565b5b61050684828561041c565b509392505050565b600082601f83011261052357610522610355565b5b81356105338482602086016104cc565b91505092915050565b600080600060608486031215610555576105546102ed565b5b600061056386828701610340565b935050602084013567ffffffffffffffff811115610584576105836102f2565b5b6105908682870161046d565b925050604084013567ffffffffffffffff8111156105b1576105b06102f2565b5b6105bd8682870161050e565b9150509250925092565b60008115159050919050565b6105dc816105c7565b82525050565b60006020820190506105f760008301846105d3565b92915050565b6000819050919050565b610610816105fd565b811461061b57600080fd5b50565b60008135905061062d81610607565b92915050565b6000806040838503121561064a576106496102ed565b5b60006106588582860161061e565b925050602083013567ffffffffffffffff811115610679576106786102f2565b5b6106858582860161050e565b9150509250929050565b61069881610317565b82525050565b60006020820190506106b3600083018461068f565b92915050565b6000602082840312156106cf576106ce6102ed565b5b600082013567ffffffffffffffff8111156106ed576106ec6102f2565b5b6106f98482850161050e565b91505092915050565b61070b816105fd565b82525050565b600060ff82169050919050565b61072781610711565b82525050565b60006060820190506107426000830186610702565b61074f6020830185610702565b61075c604083018461071e565b949350505050565b60006020828403121561077a576107796102ed565b5b600082013567ffffffffffffffff811115610798576107976102f2565b5b6107a48482850161046d565b91505092915050565b60006020820190506107c26000830184610702565b92915050565b6000602082840312156107de576107dd6102ed565b5b60006107ec8482850161061e565b91505092915050565b600060808201905061080a6000830187610702565b610817602083018661071e565b6108246040830185610702565b6108316060830184610702565b95945050505050565b600082825260208201905092915050565b7f696e76616c6964207369676e6174757265206c656e6774680000000000000000600082015250565b600061088160188361083a565b915061088c8261084b565b602082019050919050565b600060208201905081810360008301526108b081610874565b9050919050565b600081519050919050565b600081905092915050565b60005b838110156108eb5780820151818401526020810190506108d0565b60008484015250505050565b6000610902826108b7565b61090c81856108c2565b935061091c8185602086016108cd565b80840191505092915050565b600061093482846108f7565b915081905092915050565b7f19457468657265756d205369676e6564204d6573736167653a0a333200000000600082015250565b6000610975601c836108c2565b91506109808261093f565b601c82019050919050565b6000819050919050565b6109a66109a1826105fd565b61098b565b82525050565b60006109b782610968565b91506109c38284610995565b6020820191508190509291505056fea264697066735822122087cbe2b4ad3b4c48569737bd439663f45337f0a5c1d6972717fd91a52380181464736f6c63430008110033",
+	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"creator\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"receiveMoney\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"receiver\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"name\":\"withdrawMoney\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	Bin: "0x608060405234801561001057600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550610cba806100606000396000f3fe60806040526004361061003f5760003560e01c806302d05d3f1461004457806312065fe01461006f5780636c9ee8d11461009a5780636d26ec18146100d7575b600080fd5b34801561005057600080fd5b506100596100e1565b60405161006691906104c1565b60405180910390f35b34801561007b57600080fd5b50610084610105565b60405161009191906104f5565b60405180910390f35b3480156100a657600080fd5b506100c160048036038101906100bc9190610763565b61010d565b6040516100ce9190610831565b60405180910390f35b6100df6102b0565b005b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600047905090565b60008061011c87878787610340565b9050600061012982610379565b905060008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1661016c82866103a9565b73ffffffffffffffffffffffffffffffffffffffff16146101c2576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016101b9906108a9565b60405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff168873ffffffffffffffffffffffffffffffffffffffff1614610230576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161022790610915565b60405180910390fd5b60003373ffffffffffffffffffffffffffffffffffffffff16876113889060405161025a90610966565b600060405180830381858888f193505050503d8060008114610298576040519150601f19603f3d011682016040523d82523d6000602084013e61029d565b606091505b5050905080935050505095945050505050565b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161461033e576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610335906109c7565b60405180910390fd5b565b6000848484846040516020016103599493929190610ac1565b604051602081830303815290604052805190602001209050949350505050565b60008160405160200161038c9190610b82565b604051602081830303815290604052805190602001209050919050565b6000806000806103b885610418565b925092509250600186828585604051600081526020016040526040516103e19493929190610bd3565b6020604051602081039080840390855afa158015610403573d6000803e3d6000fd5b50505060206040510351935050505092915050565b60008060006041845114610461576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161045890610c64565b60405180910390fd5b6020840151925060408401519150606084015160001a90509193909250565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b60006104ab82610480565b9050919050565b6104bb816104a0565b82525050565b60006020820190506104d660008301846104b2565b92915050565b6000819050919050565b6104ef816104dc565b82525050565b600060208201905061050a60008301846104e6565b92915050565b6000604051905090565b600080fd5b600080fd5b61052d816104a0565b811461053857600080fd5b50565b60008135905061054a81610524565b92915050565b600080fd5b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6105a38261055a565b810181811067ffffffffffffffff821117156105c2576105c161056b565b5b80604052505050565b60006105d5610510565b90506105e1828261059a565b919050565b600067ffffffffffffffff8211156106015761060061056b565b5b61060a8261055a565b9050602081019050919050565b82818337600083830152505050565b6000610639610634846105e6565b6105cb565b90508281526020810184848401111561065557610654610555565b5b610660848285610617565b509392505050565b600082601f83011261067d5761067c610550565b5b813561068d848260208601610626565b91505092915050565b61069f816104dc565b81146106aa57600080fd5b50565b6000813590506106bc81610696565b92915050565b600067ffffffffffffffff8211156106dd576106dc61056b565b5b6106e68261055a565b9050602081019050919050565b6000610706610701846106c2565b6105cb565b90508281526020810184848401111561072257610721610555565b5b61072d848285610617565b509392505050565b600082601f83011261074a57610749610550565b5b813561075a8482602086016106f3565b91505092915050565b600080600080600060a0868803121561077f5761077e61051a565b5b600061078d8882890161053b565b955050602086013567ffffffffffffffff8111156107ae576107ad61051f565b5b6107ba88828901610668565b94505060406107cb888289016106ad565b93505060606107dc888289016106ad565b925050608086013567ffffffffffffffff8111156107fd576107fc61051f565b5b61080988828901610735565b9150509295509295909350565b60008115159050919050565b61082b81610816565b82525050565b60006020820190506108466000830184610822565b92915050565b600082825260208201905092915050565b7f696e76616c6964207369676e6174757265212121000000000000000000000000600082015250565b600061089360148361084c565b915061089e8261085d565b602082019050919050565b600060208201905081810360008301526108c281610886565b9050919050565b7f77726f6e67207265636569766572212121000000000000000000000000000000600082015250565b60006108ff60118361084c565b915061090a826108c9565b602082019050919050565b6000602082019050818103600083015261092e816108f2565b9050919050565b600081905092915050565b50565b6000610950600083610935565b915061095b82610940565b600082019050919050565b600061097182610943565b9150819050919050565b7f4e6f742061757468656e7469636174696f6e2121210000000000000000000000600082015250565b60006109b160158361084c565b91506109bc8261097b565b602082019050919050565b600060208201905081810360008301526109e0816109a4565b9050919050565b60008160601b9050919050565b60006109ff826109e7565b9050919050565b6000610a11826109f4565b9050919050565b610a29610a24826104a0565b610a06565b82525050565b600081519050919050565b600081905092915050565b60005b83811015610a63578082015181840152602081019050610a48565b60008484015250505050565b6000610a7a82610a2f565b610a848185610a3a565b9350610a94818560208601610a45565b80840191505092915050565b6000819050919050565b610abb610ab6826104dc565b610aa0565b82525050565b6000610acd8287610a18565b601482019150610add8286610a6f565b9150610ae98285610aaa565b602082019150610af98284610aaa565b60208201915081905095945050505050565b7f4261746d616e207673204a6f6b65720000000000000000000000000000000000600082015250565b6000610b41600f83610a3a565b9150610b4c82610b0b565b600f82019050919050565b6000819050919050565b6000819050919050565b610b7c610b7782610b57565b610b61565b82525050565b6000610b8d82610b34565b9150610b998284610b6b565b60208201915081905092915050565b610bb181610b57565b82525050565b600060ff82169050919050565b610bcd81610bb7565b82525050565b6000608082019050610be86000830187610ba8565b610bf56020830186610bc4565b610c026040830185610ba8565b610c0f6060830184610ba8565b95945050505050565b7f696e76616c6964207369676e6174757265206c656e6774682121210000000000600082015250565b6000610c4e601b8361084c565b9150610c5982610c18565b602082019050919050565b60006020820190508181036000830152610c7d81610c41565b905091905056fea2646970667358221220be611fa26818d5cd26859d61df364d275277c0aeb1688ffabcb087fdb79cefc264736f6c63430008110033",
 }
 
 // ExchangecoinABI is the input ABI used to generate the binding from.
@@ -201,74 +201,12 @@ func (_Exchangecoin *ExchangecoinTransactorRaw) Transact(opts *bind.TransactOpts
 	return _Exchangecoin.Contract.contract.Transact(opts, method, params...)
 }
 
-// GetEthSignedMessageHash is a free data retrieval call binding the contract method 0xfa540801.
+// Creator is a free data retrieval call binding the contract method 0x02d05d3f.
 //
-// Solidity: function getEthSignedMessageHash(bytes32 _messageHash) pure returns(bytes32)
-func (_Exchangecoin *ExchangecoinCaller) GetEthSignedMessageHash(opts *bind.CallOpts, _messageHash [32]byte) ([32]byte, error) {
+// Solidity: function creator() view returns(address)
+func (_Exchangecoin *ExchangecoinCaller) Creator(opts *bind.CallOpts) (common.Address, error) {
 	var out []interface{}
-	err := _Exchangecoin.contract.Call(opts, &out, "getEthSignedMessageHash", _messageHash)
-
-	if err != nil {
-		return *new([32]byte), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
-
-	return out0, err
-
-}
-
-// GetEthSignedMessageHash is a free data retrieval call binding the contract method 0xfa540801.
-//
-// Solidity: function getEthSignedMessageHash(bytes32 _messageHash) pure returns(bytes32)
-func (_Exchangecoin *ExchangecoinSession) GetEthSignedMessageHash(_messageHash [32]byte) ([32]byte, error) {
-	return _Exchangecoin.Contract.GetEthSignedMessageHash(&_Exchangecoin.CallOpts, _messageHash)
-}
-
-// GetEthSignedMessageHash is a free data retrieval call binding the contract method 0xfa540801.
-//
-// Solidity: function getEthSignedMessageHash(bytes32 _messageHash) pure returns(bytes32)
-func (_Exchangecoin *ExchangecoinCallerSession) GetEthSignedMessageHash(_messageHash [32]byte) ([32]byte, error) {
-	return _Exchangecoin.Contract.GetEthSignedMessageHash(&_Exchangecoin.CallOpts, _messageHash)
-}
-
-// GetMessageHash is a free data retrieval call binding the contract method 0xb446f3b2.
-//
-// Solidity: function getMessageHash(string _message) pure returns(bytes32)
-func (_Exchangecoin *ExchangecoinCaller) GetMessageHash(opts *bind.CallOpts, _message string) ([32]byte, error) {
-	var out []interface{}
-	err := _Exchangecoin.contract.Call(opts, &out, "getMessageHash", _message)
-
-	if err != nil {
-		return *new([32]byte), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
-
-	return out0, err
-
-}
-
-// GetMessageHash is a free data retrieval call binding the contract method 0xb446f3b2.
-//
-// Solidity: function getMessageHash(string _message) pure returns(bytes32)
-func (_Exchangecoin *ExchangecoinSession) GetMessageHash(_message string) ([32]byte, error) {
-	return _Exchangecoin.Contract.GetMessageHash(&_Exchangecoin.CallOpts, _message)
-}
-
-// GetMessageHash is a free data retrieval call binding the contract method 0xb446f3b2.
-//
-// Solidity: function getMessageHash(string _message) pure returns(bytes32)
-func (_Exchangecoin *ExchangecoinCallerSession) GetMessageHash(_message string) ([32]byte, error) {
-	return _Exchangecoin.Contract.GetMessageHash(&_Exchangecoin.CallOpts, _message)
-}
-
-// RecoverSigner is a free data retrieval call binding the contract method 0x97aba7f9.
-//
-// Solidity: function recoverSigner(bytes32 _ethSignedMessageHash, bytes _signature) pure returns(address)
-func (_Exchangecoin *ExchangecoinCaller) RecoverSigner(opts *bind.CallOpts, _ethSignedMessageHash [32]byte, _signature []byte) (common.Address, error) {
-	var out []interface{}
-	err := _Exchangecoin.contract.Call(opts, &out, "recoverSigner", _ethSignedMessageHash, _signature)
+	err := _Exchangecoin.contract.Call(opts, &out, "creator")
 
 	if err != nil {
 		return *new(common.Address), err
@@ -280,97 +218,89 @@ func (_Exchangecoin *ExchangecoinCaller) RecoverSigner(opts *bind.CallOpts, _eth
 
 }
 
-// RecoverSigner is a free data retrieval call binding the contract method 0x97aba7f9.
+// Creator is a free data retrieval call binding the contract method 0x02d05d3f.
 //
-// Solidity: function recoverSigner(bytes32 _ethSignedMessageHash, bytes _signature) pure returns(address)
-func (_Exchangecoin *ExchangecoinSession) RecoverSigner(_ethSignedMessageHash [32]byte, _signature []byte) (common.Address, error) {
-	return _Exchangecoin.Contract.RecoverSigner(&_Exchangecoin.CallOpts, _ethSignedMessageHash, _signature)
+// Solidity: function creator() view returns(address)
+func (_Exchangecoin *ExchangecoinSession) Creator() (common.Address, error) {
+	return _Exchangecoin.Contract.Creator(&_Exchangecoin.CallOpts)
 }
 
-// RecoverSigner is a free data retrieval call binding the contract method 0x97aba7f9.
+// Creator is a free data retrieval call binding the contract method 0x02d05d3f.
 //
-// Solidity: function recoverSigner(bytes32 _ethSignedMessageHash, bytes _signature) pure returns(address)
-func (_Exchangecoin *ExchangecoinCallerSession) RecoverSigner(_ethSignedMessageHash [32]byte, _signature []byte) (common.Address, error) {
-	return _Exchangecoin.Contract.RecoverSigner(&_Exchangecoin.CallOpts, _ethSignedMessageHash, _signature)
+// Solidity: function creator() view returns(address)
+func (_Exchangecoin *ExchangecoinCallerSession) Creator() (common.Address, error) {
+	return _Exchangecoin.Contract.Creator(&_Exchangecoin.CallOpts)
 }
 
-// SplitSignature is a free data retrieval call binding the contract method 0xa7bb5803.
+// GetBalance is a free data retrieval call binding the contract method 0x12065fe0.
 //
-// Solidity: function splitSignature(bytes sig) pure returns(bytes32 r, bytes32 s, uint8 v)
-func (_Exchangecoin *ExchangecoinCaller) SplitSignature(opts *bind.CallOpts, sig []byte) (struct {
-	R [32]byte
-	S [32]byte
-	V uint8
-}, error) {
+// Solidity: function getBalance() view returns(uint256)
+func (_Exchangecoin *ExchangecoinCaller) GetBalance(opts *bind.CallOpts) (*big.Int, error) {
 	var out []interface{}
-	err := _Exchangecoin.contract.Call(opts, &out, "splitSignature", sig)
-
-	outstruct := new(struct {
-		R [32]byte
-		S [32]byte
-		V uint8
-	})
-	if err != nil {
-		return *outstruct, err
-	}
-
-	outstruct.R = *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
-	outstruct.S = *abi.ConvertType(out[1], new([32]byte)).(*[32]byte)
-	outstruct.V = *abi.ConvertType(out[2], new(uint8)).(*uint8)
-
-	return *outstruct, err
-
-}
-
-// SplitSignature is a free data retrieval call binding the contract method 0xa7bb5803.
-//
-// Solidity: function splitSignature(bytes sig) pure returns(bytes32 r, bytes32 s, uint8 v)
-func (_Exchangecoin *ExchangecoinSession) SplitSignature(sig []byte) (struct {
-	R [32]byte
-	S [32]byte
-	V uint8
-}, error) {
-	return _Exchangecoin.Contract.SplitSignature(&_Exchangecoin.CallOpts, sig)
-}
-
-// SplitSignature is a free data retrieval call binding the contract method 0xa7bb5803.
-//
-// Solidity: function splitSignature(bytes sig) pure returns(bytes32 r, bytes32 s, uint8 v)
-func (_Exchangecoin *ExchangecoinCallerSession) SplitSignature(sig []byte) (struct {
-	R [32]byte
-	S [32]byte
-	V uint8
-}, error) {
-	return _Exchangecoin.Contract.SplitSignature(&_Exchangecoin.CallOpts, sig)
-}
-
-// Verify is a free data retrieval call binding the contract method 0x2dd34f0f.
-//
-// Solidity: function verify(address signer, string _message, bytes signature) pure returns(bool)
-func (_Exchangecoin *ExchangecoinCaller) Verify(opts *bind.CallOpts, signer common.Address, _message string, signature []byte) (bool, error) {
-	var out []interface{}
-	err := _Exchangecoin.contract.Call(opts, &out, "verify", signer, _message, signature)
+	err := _Exchangecoin.contract.Call(opts, &out, "getBalance")
 
 	if err != nil {
-		return *new(bool), err
+		return *new(*big.Int), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
 
 	return out0, err
 
 }
 
-// Verify is a free data retrieval call binding the contract method 0x2dd34f0f.
+// GetBalance is a free data retrieval call binding the contract method 0x12065fe0.
 //
-// Solidity: function verify(address signer, string _message, bytes signature) pure returns(bool)
-func (_Exchangecoin *ExchangecoinSession) Verify(signer common.Address, _message string, signature []byte) (bool, error) {
-	return _Exchangecoin.Contract.Verify(&_Exchangecoin.CallOpts, signer, _message, signature)
+// Solidity: function getBalance() view returns(uint256)
+func (_Exchangecoin *ExchangecoinSession) GetBalance() (*big.Int, error) {
+	return _Exchangecoin.Contract.GetBalance(&_Exchangecoin.CallOpts)
 }
 
-// Verify is a free data retrieval call binding the contract method 0x2dd34f0f.
+// GetBalance is a free data retrieval call binding the contract method 0x12065fe0.
 //
-// Solidity: function verify(address signer, string _message, bytes signature) pure returns(bool)
-func (_Exchangecoin *ExchangecoinCallerSession) Verify(signer common.Address, _message string, signature []byte) (bool, error) {
-	return _Exchangecoin.Contract.Verify(&_Exchangecoin.CallOpts, signer, _message, signature)
+// Solidity: function getBalance() view returns(uint256)
+func (_Exchangecoin *ExchangecoinCallerSession) GetBalance() (*big.Int, error) {
+	return _Exchangecoin.Contract.GetBalance(&_Exchangecoin.CallOpts)
+}
+
+// ReceiveMoney is a paid mutator transaction binding the contract method 0x6d26ec18.
+//
+// Solidity: function receiveMoney() payable returns()
+func (_Exchangecoin *ExchangecoinTransactor) ReceiveMoney(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _Exchangecoin.contract.Transact(opts, "receiveMoney")
+}
+
+// ReceiveMoney is a paid mutator transaction binding the contract method 0x6d26ec18.
+//
+// Solidity: function receiveMoney() payable returns()
+func (_Exchangecoin *ExchangecoinSession) ReceiveMoney() (*types.Transaction, error) {
+	return _Exchangecoin.Contract.ReceiveMoney(&_Exchangecoin.TransactOpts)
+}
+
+// ReceiveMoney is a paid mutator transaction binding the contract method 0x6d26ec18.
+//
+// Solidity: function receiveMoney() payable returns()
+func (_Exchangecoin *ExchangecoinTransactorSession) ReceiveMoney() (*types.Transaction, error) {
+	return _Exchangecoin.Contract.ReceiveMoney(&_Exchangecoin.TransactOpts)
+}
+
+// WithdrawMoney is a paid mutator transaction binding the contract method 0x6c9ee8d1.
+//
+// Solidity: function withdrawMoney(address receiver, string message, uint256 amount, uint256 nonce, bytes signature) returns(bool)
+func (_Exchangecoin *ExchangecoinTransactor) WithdrawMoney(opts *bind.TransactOpts, receiver common.Address, message string, amount *big.Int, nonce *big.Int, signature []byte) (*types.Transaction, error) {
+	return _Exchangecoin.contract.Transact(opts, "withdrawMoney", receiver, message, amount, nonce, signature)
+}
+
+// WithdrawMoney is a paid mutator transaction binding the contract method 0x6c9ee8d1.
+//
+// Solidity: function withdrawMoney(address receiver, string message, uint256 amount, uint256 nonce, bytes signature) returns(bool)
+func (_Exchangecoin *ExchangecoinSession) WithdrawMoney(receiver common.Address, message string, amount *big.Int, nonce *big.Int, signature []byte) (*types.Transaction, error) {
+	return _Exchangecoin.Contract.WithdrawMoney(&_Exchangecoin.TransactOpts, receiver, message, amount, nonce, signature)
+}
+
+// WithdrawMoney is a paid mutator transaction binding the contract method 0x6c9ee8d1.
+//
+// Solidity: function withdrawMoney(address receiver, string message, uint256 amount, uint256 nonce, bytes signature) returns(bool)
+func (_Exchangecoin *ExchangecoinTransactorSession) WithdrawMoney(receiver common.Address, message string, amount *big.Int, nonce *big.Int, signature []byte) (*types.Transaction, error) {
+	return _Exchangecoin.Contract.WithdrawMoney(&_Exchangecoin.TransactOpts, receiver, message, amount, nonce, signature)
 }

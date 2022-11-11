@@ -29,14 +29,10 @@ func handleChoice(choice int) {
 	} else if choice == 4 {
 
 		SetValue(1e18)
-		// ReceiverBalance(Auth)
-	} else if choice == 5 {
-
-		message := "oke"
-		GetMessageHash(message)
+		//ReceiverBalance(Auth)
 	} else if choice == 6 {
 
-		v := GenerateSignature("1", "2", "3")
+		v := GenerateSignature("1", "2", "3", "1")
 		_ = v
 	} else if choice == 7 {
 

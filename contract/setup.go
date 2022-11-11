@@ -86,12 +86,13 @@ func SetNonce() {
     Auth.Nonce = big.NewInt(int64(nonce))
 }
 
-func GenerateSignature(addr string, mess string, am string) string {
+func GenerateSignature(addr string, mess string, am string, one string) string {
 
     message := ([]byte)(mess)
     amount := ([]byte)(am)
     address := ([]byte)(addr)
-    hash, ethHash := PacketWithEth(address, message, amount)
+    nonce := ([]byte)(one)
+    hash, ethHash := PacketWithEth(address, message, amount, nonce)
     fmt.Println("Msg Hash : ", hash.Hex())
     fmt.Println("ETH Hash : ", ethHash.Hex())
 
@@ -108,8 +109,8 @@ func GenerateSignature(addr string, mess string, am string) string {
     return hexutil.Encode(signature)
 }
 
-func PacketWithEth(address []byte, message []byte, amount []byte) (common.Hash, common.Hash) {
-    hash := crypto.Keccak256Hash(address, message, amount)
+func PacketWithEth(address []byte, message []byte, amount []byte, nonce []byte) (common.Hash, common.Hash) {
+    hash := crypto.Keccak256Hash(address, message, amount, nonce)
 
     return hash, crypto.Keccak256Hash(
         []byte("\x19Ethereum Signed Message:\n32"),
