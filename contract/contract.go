@@ -50,3 +50,25 @@ func WithdrawMoney(auth *bind.TransactOpts, receiver common.Address, message str
     }
     fmt.Println("Result : ", res.Hash().Hex())
 }
+
+func GetBalance() {
+
+    balance, err := Mycontract.GetBalance(&bind.CallOpts{})
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Printf("Balance of Contract : %v ether\n", balance.Div(balance, big.NewInt(1e18)))
+    fmt.Printf("Balance of Contract : %v wei\n", balance)
+}
+
+
+func ReceiveBalance(auth *bind.TransactOpts) {
+
+    tx, err := Mycontract.ReceiveMoney(auth)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println("Transaction Hash :", tx.Hash().Hex())
+}

@@ -1,11 +1,13 @@
 package contract
 
 import (
-
-	"fmt"
-	"servercoin/utils"
 	"bufio"
+	"fmt"
+	"math/rand"
 	"os"
+	"servercoin/utils"
+	"strconv"
+
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -25,15 +27,25 @@ func handleChoice(choice int) {
 		CreateNewContract(Auth, Client)
 	} else if choice == 3 {
 
-		// GetBalance()
+		GetBalance()
 	} else if choice == 4 {
 
-		SetValue(1e18)
-		//ReceiverBalance(Auth)
+		var money int64
+		fmt.Println("Enter number of ether you want to send to your contract : ")
+		fmt.Fscan(in, &money)
+		SetValue(money * 1e18)
+		ReceiveBalance(Auth)
 	} else if choice == 6 {
 
-		v := GenerateSignature("1", "2", "3", "1")
-		_ = v
+		message := utils.RandomMessage()
+		address := utils.ReadPublicKey(2)
+		amount := strconv.Itoa(rand.Intn(1e18))
+		signature := GenerateSignature(address, message, amount, "1")
+		fmt.Println("Address : ", address)
+		fmt.Println("Message : ", message)
+		fmt.Println("Amount : ", amount)
+		fmt.Println("Nonce : ", 1)
+		fmt.Println("Signature : ", signature)
 	} else if choice == 7 {
 
 		address := utils.ReadPublicKey(1)
