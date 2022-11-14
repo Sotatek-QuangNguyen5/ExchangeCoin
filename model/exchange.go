@@ -9,5 +9,5 @@ type Exchange struct {
 	Address		string
 	Message		string
 	Amount		string
-	Nonce		string
+	Nonce		int64
 }

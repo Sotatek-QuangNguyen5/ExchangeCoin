@@ -86,31 +86,34 @@ func SetNonce() {
     Auth.Nonce = big.NewInt(int64(nonce))
 }
 
-func GenerateSignature(addr string, mess string, am string, one string) string {
+func GenerateSignature(addr string, mess string, am string, one int64) string {
 
     message := ([]byte)(mess)
     amount := ([]byte)(am)
     address := ([]byte)(addr)
-    nonce := ([]byte)(one)
+    nonce := big.NewInt(one).Bytes()
     hash, ethHash := PacketWithEth(address, message, amount, nonce)
     fmt.Println("Msg Hash : ", hash.Hex())
     fmt.Println("ETH Hash : ", ethHash.Hex())
 
     signature, err := crypto.Sign(ethHash.Bytes(), privateKeyLocal)
     if err != nil {
+
         log.Fatal(err)
     }
     
     if signature[64] == 0 || signature[64] == 1 {
+
         signature[64] += 27
     }
     
     // fmt.Println(signature)
-    fmt.Println("Signature : ", hexutil.Encode(signature))
+    // fmt.Println("Signature : ", hexutil.Encode(signature))
     return hexutil.Encode(signature)
 }
 
 func PacketWithEth(address []byte, message []byte, amount []byte, nonce []byte) (common.Hash, common.Hash) {
+
     hash := crypto.Keccak256Hash(address, message, amount, nonce)
 
     return hash, crypto.Keccak256Hash(
@@ -119,12 +122,17 @@ func PacketWithEth(address []byte, message []byte, amount []byte, nonce []byte) 
     )
 }
 
-func VerifySignature(ethHash common.Hash, signature []byte) string {
+func VerifySignature(ethHash common.Hash, signature []byte) common.Address {
 
-    publicKey, err := crypto.Ecrecover(ethHash.Bytes(), signature)
+    if signature[64] == 27 || signature[64] == 28 {
+
+        signature[64] -= 27
+    }
+    rpk, err := crypto.SigToPub(ethHash.Bytes(), signature)
     if err != nil {
-
+        
         log.Fatal("Err : ", err)
     }
-    return string(publicKey)
+    pubKey := crypto.PubkeyToAddress(*rpk)
+    return pubKey
 }

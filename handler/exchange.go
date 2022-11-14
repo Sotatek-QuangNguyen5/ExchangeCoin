@@ -58,7 +58,7 @@ func (e ExchangeHandler) CreateExchange() gin.HandlerFunc {
 			return
 		}
 		req.Message = utils.RandomMessage()
-		req.Nonce = "1"
+		req.Nonce = 1
 		req.Signature = contract.GenerateSignature(req.Address, req.Message, req.Amount, req.Nonce)
 		er := e.service.CreateExchange(req)
 		if er != nil {

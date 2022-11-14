@@ -47,7 +47,7 @@ func handleChoice(choice int) {
 		message := utils.RandomMessage()
 		address := utils.ReadPublicKey(2)
 		amount := strconv.Itoa(rand.Intn(1e18))
-		signature := GenerateSignature(address, message, amount, "1")
+		signature := GenerateSignature(address, message, amount, 1)
 		fmt.Println("Address : ", address)
 		fmt.Println("Message : ", message)
 		fmt.Println("Amount : ", amount)
@@ -60,8 +60,8 @@ func handleChoice(choice int) {
 		signatureString := utils.ReadSignature(1)
 		signature := common.FromHex(signatureString)
 		publicKey := VerifySignature(ethHash, signature)
-		fmt.Println("PublicKey : ", publicKey)
-		fmt.Println(publicKey == utils.ReadPublicKey(1))
+		fmt.Println("PublicKey : ", publicKey.Hex())
+		fmt.Println(publicKey.Hex() == utils.ReadPublicKey(1))
 	} else {
 
 		fmt.Println("Input Invalid!!! Please enter again.")
