@@ -89,8 +89,6 @@ func ReadEventLog(client *ethclient.Client) {
 
         log.Fatal(err)
     }
-
-    fmt.Println("Joke Coin : ", contractAddress.Hex())
        
     for {
     

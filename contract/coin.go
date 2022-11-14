@@ -70,6 +70,14 @@ func handleChoice(choice int) {
 	} else if choice == 8 {
 
 		GetNumber()
+	} else if choice == 9 {
+
+		publicAddr := common.HexToAddress(utils.ReadContract(1))
+		amount := big.NewInt(209308858241334655)
+		message := "smTyVsGd5Xav0yu99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28m"
+		signature := common.FromHex(utils.ReadSignature(1))
+		nonce := big.NewInt(1)
+		WithdrawMoney(Auth, publicAddr, message, amount, nonce, signature)
 	} else {
 
 		fmt.Println("Input Invalid!!! Please enter again.")
@@ -90,6 +98,7 @@ func Coin() {
 		fmt.Println("6 : Verify Signature.")
 		fmt.Println("7 : SetNumber.")
 		fmt.Println("8 : GetNumber.")
+		fmt.Println("9 : withDraw Money.")
 		fmt.Fscan(in, &choice)
 		handleChoice(choice)
 		fmt.Println()

@@ -24,7 +24,7 @@ var (
 
 func Init() {
 
-    urlrpc := utils.ReadUrlRpc(4)
+    urlrpc := utils.ReadUrlRpc(2)
     client, err := ethclient.Dial(urlrpc)
     if err != nil {
         log.Fatal("Error connect rpc : ", err)
