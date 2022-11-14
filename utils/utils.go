@@ -170,3 +170,36 @@ func ReadSignature(number int) (string) {
 
 	return signature
 }
+
+func ReadETHHash(number int) (string) {
+
+
+    f, err := os.Open("./text/ethhash.txt")
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    defer f.Close()
+
+    scanner := bufio.NewScanner(f)
+	var ethHash string
+    cnt := 1
+
+    for scanner.Scan() {
+
+		ethHash = scanner.Text()
+        if cnt == number {
+
+            break
+        }
+        cnt += 1
+    }
+
+    if err := scanner.Err(); err != nil {
+
+        log.Fatal(err)
+    }
+
+	return ethHash
+}

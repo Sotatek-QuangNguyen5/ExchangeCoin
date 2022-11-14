@@ -72,9 +72,9 @@ func Init() {
     Auth.GasPrice = gasPrice
 }
 
-func SetValue(value int64) {
+func SetValue(value *big.Int) {
 
-    Auth.Value = big.NewInt(value)
+    Auth.Value = value
 }
 
 func SetNonce() {
@@ -100,6 +100,7 @@ func GenerateSignature(addr string, mess string, am string, one string) string {
     if err != nil {
         log.Fatal(err)
     }
+    
     if signature[64] == 0 || signature[64] == 1 {
         signature[64] += 27
     }
@@ -116,4 +117,14 @@ func PacketWithEth(address []byte, message []byte, amount []byte, nonce []byte) 
         []byte("\x19Ethereum Signed Message:\n32"),
         hash.Bytes(),
     )
+}
+
+func VerifySignature(ethHash common.Hash, signature []byte) string {
+
+    publicKey, err := crypto.Ecrecover(ethHash.Bytes(), signature)
+    if err != nil {
+
+        log.Fatal("Err : ", err)
+    }
+    return string(publicKey)
 }

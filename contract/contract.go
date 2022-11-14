@@ -18,7 +18,7 @@ var (
 	Mycontract *exchangecoin.Exchangecoin
 )
 
-func CreateNewContract(auth *bind.TransactOpts, client *ethclient.Client) {
+func CreateNewContract(client *ethclient.Client) {
 
 	contractAddress := utils.ReadContract(1)
 	address := common.HexToAddress(contractAddress)
@@ -58,8 +58,8 @@ func GetBalance() {
         log.Fatal(err)
     }
 
-    fmt.Printf("Balance of Contract : %v ether\n", balance.Div(balance, big.NewInt(1e18)))
     fmt.Printf("Balance of Contract : %v wei\n", balance)
+    fmt.Printf("Balance of Contract : %v ether\n", balance.Div(balance, big.NewInt(1e18)))
 }
 
 
