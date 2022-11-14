@@ -4,6 +4,8 @@ pragma solidity >=0.7.0 <0.9.0;
 contract ExchangeCoin {
     
     address public creator;
+    event onSetNumber(address addr);
+    uint256 public myNumber;
 
     constructor() {
 
@@ -49,6 +51,7 @@ contract ExchangeCoin {
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
         require(recoverSigner(ethSignedMessageHash, signature) == creator, "invalid signature!!!");
         require(receiver == msg.sender, "wrong receiver!!!");
+        require(amount <= address(this).balance, "not enough money!!!");
         (bool oke, ) = msg.sender.call{value: amount, gas: 5000}("");
         return oke;
     }
@@ -60,16 +63,14 @@ contract ExchangeCoin {
         return address(this).balance;
     }
 
-//     function withdrawMoneyForCreator(uint256 amount) public onlyOwner() returns(bool) {
+    function setNumber(uint256 number) public {
 
-//         require(amount <= address(this).balance, "Not enough money!!!");
-//         (bool oke, ) = msg.sender.call{value: amount, gas: 5000}("");
-//         return oke;
-//     }
+        emit onSetNumber(msg.sender);
+        myNumber = number;
+    }
 
-//     function withdrawAllMoneyForCreator() public view onlyOwner() returns(bool) {
+    function getNumber() public view returns(uint256) {
 
-//         (bool oke, ) = msg.sender.call{value: address(this).balance, gas: 5000}("");
-//         return true;
-//     }
+        return myNumber;
+    }
 }

@@ -1,6 +1,7 @@
 package contract
 
 import (
+	
 	"bufio"
 	"fmt"
 	"math/big"
@@ -8,7 +9,6 @@ import (
 	"os"
 	"servercoin/utils"
 	"strconv"
-
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -62,6 +62,14 @@ func handleChoice(choice int) {
 		publicKey := VerifySignature(ethHash, signature)
 		fmt.Println("PublicKey : ", publicKey.Hex())
 		fmt.Println(publicKey.Hex() == utils.ReadPublicKey(1))
+	} else if choice == 7 {
+
+		var input int64
+		fmt.Fscan(in, &input)
+		SetNumber(Auth, input)
+	} else if choice == 8 {
+
+		GetNumber()
 	} else {
 
 		fmt.Println("Input Invalid!!! Please enter again.")
@@ -70,7 +78,6 @@ func handleChoice(choice int) {
 
 func Coin() {
 
-	Init()
 	for {
 
 		var choice int
@@ -81,6 +88,8 @@ func Coin() {
 		fmt.Println("4 : Send ETH to Contract.")
 		fmt.Println("5 : Generate Signature.")
 		fmt.Println("6 : Verify Signature.")
+		fmt.Println("7 : SetNumber.")
+		fmt.Println("8 : GetNumber.")
 		fmt.Fscan(in, &choice)
 		handleChoice(choice)
 		fmt.Println()

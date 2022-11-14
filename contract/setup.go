@@ -24,12 +24,13 @@ var (
 
 func Init() {
 
-    urlrpc := utils.ReadUrlRpc(1)
+    urlrpc := utils.ReadUrlRpc(4)
     client, err := ethclient.Dial(urlrpc)
     if err != nil {
-        log.Fatal(err)
+        log.Fatal("Error connect rpc : ", err)
     }
     Client = client
+    // fmt.Println("URL rpc : ", urlrpc)
 
 	privateKeyString := utils.ReadPrivateKey(1)
 

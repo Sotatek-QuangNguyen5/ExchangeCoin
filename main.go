@@ -10,9 +10,15 @@ import (
 
 func main() {
 
+	contract.Init()
+	go func ()  {
+	
+		contract.Coin()
+	}()
+
 	go func ()  {
 		
-		contract.Coin()
+		contract.ReadEventLog(contract.Client)
 	}()
 	router.Start()
 }

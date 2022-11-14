@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"log"
 	"math/big"
-
+    "context"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-
+    "github.com/ethereum/go-ethereum"
+    "github.com/ethereum/go-ethereum/core/types"
 	"servercoin/exchangecoin"
 	"servercoin/utils"
 )
@@ -71,4 +72,54 @@ func ReceiveBalance(auth *bind.TransactOpts) {
     }
 
     fmt.Println("Transaction Hash :", tx.Hash().Hex())
+}
+
+func ReadEventLog(client *ethclient.Client) {
+
+    addr := utils.ReadContract(1)
+    contractAddress := common.HexToAddress(addr)
+    query := ethereum.FilterQuery {
+
+        Addresses: []common.Address{contractAddress},
+    }
+
+    logs := make(chan types.Log)
+    sub, err := client.SubscribeFilterLogs(context.Background(), query, logs)
+    if err != nil {
+
+        log.Fatal(err)
+    }
+
+    fmt.Println("Joke Coin : ", contractAddress.Hex())
+       
+    for {
+    
+        select {
+            
+            case err := <-sub.Err():
+                log.Fatal(err)
+            case vLog := <-logs:
+                fmt.Println("This is Event Log : ", vLog.Address.Hex()) // pointer to event log
+        }
+    }
+}
+
+func SetNumber(auth *bind.TransactOpts, x int64) {
+
+    tx, err := Mycontract.SetNumber(auth, big.NewInt(x))
+    if err != nil {
+
+        log.Fatal("Error : ", err)
+    }
+    fmt.Println("Transaction : ", tx.Hash().Hex())
+}
+
+func GetNumber() {
+
+    tx, err := Mycontract.GetNumber(&bind.CallOpts{})
+    if err != nil {
+
+        log.Fatal("Error : ", err)
+    }
+    fmt.Println("Transaction : ", tx)
 }
