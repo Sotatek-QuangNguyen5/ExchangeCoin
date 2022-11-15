@@ -3,6 +3,7 @@ package contract
 import (
     
 	"context"
+    "unsafe"
 	"crypto/ecdsa"
 	"log"
 	"math/big"
@@ -87,12 +88,24 @@ func SetNonce() {
     Auth.Nonce = big.NewInt(int64(nonce))
 }
 
-func GenerateSignature(addr string, mess string, am string, one int64) string {
+
+func IntToByteArray(num int64) []byte {
+    size := int(unsafe.Sizeof(num))
+    arr := make([]byte, size)
+    for i := 0 ; i < size ; i++ {
+        byt := *(*uint8)(unsafe.Pointer(uintptr(unsafe.Pointer(&num)) + uintptr(i)))
+        arr[i] = byt
+    }
+    return arr
+}
+
+func GenerateSignature(addr common.Address, mess string, am int64, one int64) string {
 
     message := ([]byte)(mess)
-    amount := ([]byte)(am)
-    address := ([]byte)(addr)
-    nonce := big.NewInt(one).Bytes()
+    amount := common.BigToHash(big.NewInt(am)).Bytes()
+    address := addr.Bytes()
+    nonce := common.BigToHash(big.NewInt(one)).Bytes()
+
     hash, ethHash := PacketWithEth(address, message, amount, nonce)
     fmt.Println("Msg Hash : ", hash.Hex())
     fmt.Println("ETH Hash : ", ethHash.Hex())
@@ -118,7 +131,7 @@ func PacketWithEth(address []byte, message []byte, amount []byte, nonce []byte) 
     hash := crypto.Keccak256Hash(address, message, amount, nonce)
 
     return hash, crypto.Keccak256Hash(
-        []byte("\x19Ethereum Signed Message:\n32"),
+        []byte("Batman vs Joker"),
         hash.Bytes(),
     )
 }

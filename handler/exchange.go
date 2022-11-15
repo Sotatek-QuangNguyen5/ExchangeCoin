@@ -8,6 +8,7 @@ import (
 	"servercoin/service"
 	"servercoin/utils"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/gin-gonic/gin"
 )
 
@@ -59,7 +60,8 @@ func (e ExchangeHandler) CreateExchange() gin.HandlerFunc {
 		}
 		req.Message = utils.RandomMessage()
 		req.Nonce = 1
-		req.Signature = contract.GenerateSignature(req.Address, req.Message, req.Amount, req.Nonce)
+		addr := common.HexToAddress(req.Address)
+		req.Signature = contract.GenerateSignature(addr, req.Message, req.Amount, req.Nonce)
 		er := e.service.CreateExchange(req)
 		if er != nil {
 

@@ -8,6 +8,6 @@ type Exchange struct {
 	Signature	string
 	Address		string
 	Message		string
-	Amount		string
+	Amount		int64
 	Nonce		int64
 }

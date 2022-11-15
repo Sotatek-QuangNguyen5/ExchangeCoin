@@ -9,3 +9,6 @@ deploy:
 
 run:
 	./servercoin
+
+test:
+	go run main.go

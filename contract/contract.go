@@ -121,3 +121,15 @@ func GetNumber() {
     }
     fmt.Println("Transaction : ", tx)
 }
+
+func GetMessageHash(receiver common.Address, message string, amount *big.Int, nonce *big.Int) {
+
+    mess, err := Mycontract.GetMessageHash(&bind.CallOpts{}, receiver, message, amount, nonce)
+    if err != nil {
+
+        log.Fatal("Error get MessageHash : ", err)
+    }
+    messHash := mess[:]
+    // 0x5492523bcb99c8948b86774f115c37d14ffd5a5ea51078d586676a66f908b110
+    fmt.Println("Message Hash : ", common.BytesToHash(messHash).Hex())
+}

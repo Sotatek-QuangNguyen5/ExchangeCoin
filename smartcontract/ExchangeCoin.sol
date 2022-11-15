@@ -18,17 +18,17 @@ contract ExchangeCoin {
         _;
     }
 
-    function getMessageHash(address receiver, string memory message, uint256 amount, uint256 nonce) private pure returns(bytes32) {
+    function getMessageHash(address receiver, string memory message, uint256 amount, uint256 nonce) public pure returns(bytes32) {
 
         return keccak256(abi.encodePacked(receiver, message, amount, nonce));
     }
 
-    function getEthSignedMessageHash(bytes32 messageHash) private pure returns(bytes32) {
+    function getEthSignedMessageHash(bytes32 messageHash) public pure returns(bytes32) {
         
         return keccak256(abi.encodePacked("Batman vs Joker", messageHash));
     }
 
-    function splitSignature(bytes memory sig) private pure returns (bytes32 r, bytes32 s, uint8 v) {
+    function splitSignature(bytes memory sig) public pure returns (bytes32 r, bytes32 s, uint8 v) {
         
         require(sig.length == 65, "invalid signature length!!!");
         assembly {
@@ -39,7 +39,7 @@ contract ExchangeCoin {
         }
     }
 
-    function recoverSigner(bytes32 ethSignedMessageHash, bytes memory signature) private pure returns(address) {
+    function recoverSigner(bytes32 ethSignedMessageHash, bytes memory signature) public pure returns(address) {
 
         (bytes32 r, bytes32 s, uint8 v) = splitSignature(signature);
         return ecrecover(ethSignedMessageHash, v, r, s);
@@ -72,5 +72,12 @@ contract ExchangeCoin {
     function getNumber() public view returns(uint256) {
 
         return myNumber;
+    }
+
+    function verify(address receiver, string memory message, uint256 amount, uint256 nonce, bytes memory signature) public view returns(bool) {
+        
+        bytes32 messageHash = getMessageHash(receiver, message, amount, nonce);
+        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+        return recoverSigner(ethSignedMessageHash, signature) == creator;
     }
 }

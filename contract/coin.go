@@ -8,7 +8,6 @@ import (
 	"math/rand"
 	"os"
 	"servercoin/utils"
-	"strconv"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -45,8 +44,8 @@ func handleChoice(choice int) {
 	} else if choice == 5 {
 
 		message := utils.RandomMessage()
-		address := utils.ReadPublicKey(2)
-		amount := strconv.Itoa(rand.Intn(1e18))
+		address := common.HexToAddress(utils.ReadPublicKey(2))
+		amount := rand.Int63n(1e18)
 		signature := GenerateSignature(address, message, amount, 1)
 		fmt.Println("Address : ", address)
 		fmt.Println("Message : ", message)
@@ -72,12 +71,22 @@ func handleChoice(choice int) {
 		GetNumber()
 	} else if choice == 9 {
 
-		publicAddr := common.HexToAddress(utils.ReadContract(1))
-		amount := big.NewInt(209308858241334655)
-		message := "smTyVsGd5Xav0yu99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28m"
+		publicAddr := common.HexToAddress(utils.ReadPublicKey(2))
+		amount := big.NewInt(793183108815074904)
+		message := "A7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28mLGpj0sdzvhNhjpXmkI0TwX"
 		signature := common.FromHex(utils.ReadSignature(1))
 		nonce := big.NewInt(1)
 		WithdrawMoney(Auth, publicAddr, message, amount, nonce, signature)
+	} else if choice == 10 {
+
+		message := "2smTyVsGd5Xav0yu99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28"
+		address := common.HexToAddress(utils.ReadPublicKey(2))
+		// amount := rand.Int63n(1e18)
+		GetMessageHash(address, message, big.NewInt(807817071862113702), big.NewInt(1))
+		fmt.Println("Address : ", address)
+		fmt.Println("Message : ", message)
+		fmt.Println("Amount : ", 807817071862113702)
+		fmt.Println("Nonce : ", 1)
 	} else {
 
 		fmt.Println("Input Invalid!!! Please enter again.")
@@ -99,6 +108,7 @@ func Coin() {
 		fmt.Println("7 : SetNumber.")
 		fmt.Println("8 : GetNumber.")
 		fmt.Println("9 : withDraw Money.")
+		fmt.Println("10 : Get MessageHash.")
 		fmt.Fscan(in, &choice)
 		handleChoice(choice)
 		fmt.Println()

@@ -7,7 +7,7 @@ type Exchange struct {
 	Message		string		`json:"message"`
 	Address		string		`json:"address"`
 	Signature	string		`json:"signature"`
-	Amount		string		`json:"amount"`
+	Amount		int64		`json:"amount"`
 	Nonce		int64		`json:"nonce"`
 }
 
