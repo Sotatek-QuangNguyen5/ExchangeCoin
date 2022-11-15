@@ -33,7 +33,7 @@ func Init() {
     Client = client
     // fmt.Println("URL rpc : ", urlrpc)
 
-	privateKeyString := utils.ReadPrivateKey(1)
+	privateKeyString := utils.ReadPrivateKey(2)
 
     privateKey, err := crypto.HexToECDSA(privateKeyString)
     if err != nil {
@@ -104,7 +104,13 @@ func GenerateSignature(addr common.Address, mess string, am int64, one int64) st
     message := ([]byte)(mess)
     amount := common.BigToHash(big.NewInt(am)).Bytes()
     address := addr.Bytes()
+    on, err := Client.PendingNonceAt(context.Background(), fromAddress)
+    if err != nil {
+        log.Fatal(err)
+    }
+    one = int64(on)
     nonce := common.BigToHash(big.NewInt(one)).Bytes()
+    fmt.Println("Nonce reset : ", on)
 
     hash, ethHash := PacketWithEth(address, message, amount, nonce)
     fmt.Println("Msg Hash : ", hash.Hex())

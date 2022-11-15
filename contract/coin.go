@@ -72,10 +72,10 @@ func handleChoice(choice int) {
 	} else if choice == 9 {
 
 		publicAddr := common.HexToAddress(utils.ReadPublicKey(2))
-		amount := big.NewInt(793183108815074904)
-		message := "A7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28mLGpj0sdzvhNhjpXmkI0TwX"
+		amount := big.NewInt(548432111829895923)
+		message := "TI2smTyVsGd5Xav0yu99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X"
 		signature := common.FromHex(utils.ReadSignature(1))
-		nonce := big.NewInt(1)
+		nonce := big.NewInt(16)
 		WithdrawMoney(Auth, publicAddr, message, amount, nonce, signature)
 	} else if choice == 10 {
 

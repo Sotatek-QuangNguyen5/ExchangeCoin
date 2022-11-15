@@ -18,7 +18,7 @@ contract ExchangeCoin {
         _;
     }
 
-    function getMessageHash(address receiver, string memory message, uint256 amount, uint256 nonce) public pure returns(bytes32) {
+    function getMessageHash(address receiver, string memory message, uint256 amount, uint nonce) public pure returns(bytes32) {
 
         return keccak256(abi.encodePacked(receiver, message, amount, nonce));
     }
