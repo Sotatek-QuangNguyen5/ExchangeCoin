@@ -4,23 +4,18 @@ pragma solidity >=0.7.0 <0.9.0;
 contract ExchangeCoin {
     
     address public creator;
-    event onSetNumber(address addr);
-    uint256 public myNumber;
+    mapping (address => bool) listReceiver;
+    event eventReceiverMoney(address addr, uint256 amount);
+    event eventWithDrawMoney(address addr);
 
     constructor() {
 
         creator = msg.sender;
     }
 
-    modifier onlyOwner() {
+    function getMessageHash(address receiver, string memory message, uint256 amount) public pure returns(bytes32) {
 
-        require(msg.sender == creator, "Not authentication!!!");
-        _;
-    }
-
-    function getMessageHash(address receiver, string memory message, uint256 amount, uint nonce) public pure returns(bytes32) {
-
-        return keccak256(abi.encodePacked(receiver, message, amount, nonce));
+        return keccak256(abi.encodePacked(receiver, message, amount));
     }
 
     function getEthSignedMessageHash(bytes32 messageHash) public pure returns(bytes32) {
@@ -45,39 +40,27 @@ contract ExchangeCoin {
         return ecrecover(ethSignedMessageHash, v, r, s);
     }
 
-    function withdrawMoney(address receiver, string memory message, uint256 amount, uint256 nonce, bytes memory signature) public returns(bool) {
+    function withdrawMoney(address payable receiver, string memory message, uint256 amount, bytes memory signature) public {
         
-        bytes32 messageHash = getMessageHash(receiver, message, amount, nonce);
+        bytes32 messageHash = getMessageHash(receiver, message, amount);
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
         require(recoverSigner(ethSignedMessageHash, signature) == creator, "invalid signature!!!");
         require(receiver == msg.sender, "wrong receiver!!!");
         require(amount <= address(this).balance, "not enough money!!!");
-        (bool oke, ) = msg.sender.call{value: amount, gas: 5000}("");
-        return oke;
+        require(listReceiver[msg.sender] == false, "you received money!!!");
+        receiver.transfer(amount);
+        listReceiver[msg.sender] = true;
+        emit eventWithDrawMoney(receiver);
     }
 
-    function receiveMoney() public payable onlyOwner() {}
+    function receiveMoney() public payable {
+
+        listReceiver[msg.sender] = false;
+        emit eventReceiverMoney(msg.sender, msg.value);
+    }
 
     function getBalance() public view returns(uint256) {
 
         return address(this).balance;
-    }
-
-    function setNumber(uint256 number) public {
-
-        emit onSetNumber(msg.sender);
-        myNumber = number;
-    }
-
-    function getNumber() public view returns(uint256) {
-
-        return myNumber;
-    }
-
-    function verify(address receiver, string memory message, uint256 amount, uint256 nonce, bytes memory signature) public view returns(bool) {
-        
-        bytes32 messageHash = getMessageHash(receiver, message, amount, nonce);
-        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
-        return recoverSigner(ethSignedMessageHash, signature) == creator;
     }
 }

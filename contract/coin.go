@@ -49,7 +49,6 @@ func handleChoice(choice int) {
 		fmt.Println("Address : ", address)
 		fmt.Println("Message : ", message)
 		fmt.Println("Amount : ", amount)
-		fmt.Println("Nonce : ", 1)
 		fmt.Println("Signature : ", signature)
 	} else if choice == 6 {
 
@@ -62,30 +61,20 @@ func handleChoice(choice int) {
 		fmt.Println(publicKey.Hex() == utils.ReadPublicKey(1))
 	} else if choice == 7 {
 
-		var input int64
-		fmt.Fscan(in, &input)
-		SetNumber(Auth, input)
+		publicAddr := common.HexToAddress(utils.ReadPublicKey(2))
+		amount := big.NewInt(788787457839692041)
+		message := "u99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28mLGpj0sdzvhNhjp"
+		signature := common.FromHex(utils.ReadSignature(1))
+		WithdrawMoney(Auth, publicAddr, message, amount, signature)
 	} else if choice == 8 {
 
-		GetNumber()
-	} else if choice == 9 {
-
-		publicAddr := common.HexToAddress(utils.ReadPublicKey(2))
-		amount := big.NewInt(548432111829895923)
-		message := "TI2smTyVsGd5Xav0yu99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X"
-		signature := common.FromHex(utils.ReadSignature(1))
-		nonce := big.NewInt(16)
-		WithdrawMoney(Auth, publicAddr, message, amount, nonce, signature)
-	} else if choice == 10 {
-
-		message := "2smTyVsGd5Xav0yu99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28"
+		message := "u99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28mLGpj0sdzvhNhjp"
 		address := common.HexToAddress(utils.ReadPublicKey(2))
 		// amount := rand.Int63n(1e18)
-		GetMessageHash(address, message, big.NewInt(807817071862113702), big.NewInt(1))
+		GetMessageHash(address, message, big.NewInt(788787457839692041))
 		fmt.Println("Address : ", address)
 		fmt.Println("Message : ", message)
-		fmt.Println("Amount : ", 807817071862113702)
-		fmt.Println("Nonce : ", 1)
+		fmt.Println("Amount : ", 788787457839692041)
 	} else {
 
 		fmt.Println("Input Invalid!!! Please enter again.")
@@ -104,10 +93,8 @@ func Coin() {
 		fmt.Println("4 : Send ETH to Contract.")
 		fmt.Println("5 : Generate Signature.")
 		fmt.Println("6 : Verify Signature.")
-		fmt.Println("7 : SetNumber.")
-		fmt.Println("8 : GetNumber.")
-		fmt.Println("9 : withDraw Money.")
-		fmt.Println("10 : Get MessageHash.")
+		fmt.Println("7 : withDraw Money.")
+		fmt.Println("8 : Get MessageHash.")
 		fmt.Fscan(in, &choice)
 		handleChoice(choice)
 		fmt.Println()

@@ -1,6 +1,7 @@
 package contract
 
 import (
+
 	"fmt"
 	"log"
 	"math/big"
@@ -10,8 +11,11 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
     "github.com/ethereum/go-ethereum"
     "github.com/ethereum/go-ethereum/core/types"
+    "github.com/ethereum/go-ethereum/accounts/abi"
 	"servercoin/exchangecoin"
 	"servercoin/utils"
+    "strings"
+    "github.com/mitchellh/mapstructure"
 )
 
 var (
@@ -42,9 +46,9 @@ func Deploy(auth *bind.TransactOpts, client *ethclient.Client) {
 	Mycontract = instance
 }
 
-func WithdrawMoney(auth *bind.TransactOpts, receiver common.Address, message string, amount *big.Int, nonce *big.Int, signature []byte) {
+func WithdrawMoney(auth *bind.TransactOpts, receiver common.Address, message string, amount *big.Int, signature []byte) {
 
-    res, err := Mycontract.WithdrawMoney(auth, receiver, message, amount, nonce, signature)
+    res, err := Mycontract.WithdrawMoney(auth, receiver, message, amount, signature)
     if err != nil {
 
         log.Fatal("Error Verify : ", err)
@@ -60,7 +64,8 @@ func GetBalance() {
     }
 
     fmt.Printf("Balance of Contract : %v wei\n", balance)
-    fmt.Printf("Balance of Contract : %v ether\n", balance.Div(balance, big.NewInt(1e18)))
+    balanceEther := new(big.Float)
+    fmt.Printf("Balance of Contract : %v ether\n", balanceEther.Quo(new(big.Float).SetInt(balance), new(big.Float).SetFloat64(1e18)))
 }
 
 
@@ -83,12 +88,24 @@ func ReadEventLog(client *ethclient.Client) {
         Addresses: []common.Address{contractAddress},
     }
 
+    exchangecoin.ExchangecoinEventReceiverMoney
     logs := make(chan types.Log)
     sub, err := client.SubscribeFilterLogs(context.Background(), query, logs)
     if err != nil {
 
         log.Fatal(err)
     }
+
+    contractAbi, err := abi.JSON(strings.NewReader(string(exchangecoin.ExchangecoinABI)))
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    eventData := struct {
+        
+        addr common.Address
+        amount *big.Int
+    }{}
        
     for {
     
@@ -97,39 +114,35 @@ func ReadEventLog(client *ethclient.Client) {
             case err := <-sub.Err():
                 log.Fatal(err)
             case vLog := <-logs:
-                fmt.Println("This is Event Log : ", vLog.Address.Hex()) // pointer to event log
+                //fmt.Println("This is Event Log : ", vLog.Topics) // pointer to event log
+                //Topics(vLog.Topics)
+                event, err := contractAbi.Unpack("eventReceiverMoney", vLog.Data)
+                if err != nil {
+                    log.Fatal(err)
+                }
+                mapstructure.Decode(event, &eventData)
+                fmt.Println(eventData.addr)
+                fmt.Println(eventData.addr)
+                fmt.Println(eventData.amount)
         }
     }
 }
 
-func SetNumber(auth *bind.TransactOpts, x int64) {
+func Topics(topics []common.Hash) {
 
-    tx, err := Mycontract.SetNumber(auth, big.NewInt(x))
-    if err != nil {
+    for i, v := range topics {
 
-        log.Fatal("Error : ", err)
+        fmt.Println("Topic ", i, " : ", v.Hex())
     }
-    fmt.Println("Transaction : ", tx.Hash().Hex())
 }
 
-func GetNumber() {
+func GetMessageHash(receiver common.Address, message string, amount *big.Int) {
 
-    tx, err := Mycontract.GetNumber(&bind.CallOpts{})
-    if err != nil {
-
-        log.Fatal("Error : ", err)
-    }
-    fmt.Println("Transaction : ", tx)
-}
-
-func GetMessageHash(receiver common.Address, message string, amount *big.Int, nonce *big.Int) {
-
-    mess, err := Mycontract.GetMessageHash(&bind.CallOpts{}, receiver, message, amount, nonce)
+    mess, err := Mycontract.GetMessageHash(&bind.CallOpts{}, receiver, message, amount)
     if err != nil {
 
         log.Fatal("Error get MessageHash : ", err)
     }
     messHash := mess[:]
-    // 0x5492523bcb99c8948b86774f115c37d14ffd5a5ea51078d586676a66f908b110
     fmt.Println("Message Hash : ", common.BytesToHash(messHash).Hex())
 }
