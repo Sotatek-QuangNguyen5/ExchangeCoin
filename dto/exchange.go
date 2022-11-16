@@ -7,8 +7,7 @@ type Exchange struct {
 	Message		string		`json:"message"`
 	Address		string		`json:"address"`
 	Signature	string		`json:"signature"`
-	Amount		int64		`json:"amount"`
-	Nonce		int64		`json:"nonce"`
+	Amount		string		`json:"amount"`
 }
 
 func MExchangeToDExchange(exchange *model.Exchange) *Exchange {
@@ -19,7 +18,6 @@ func MExchangeToDExchange(exchange *model.Exchange) *Exchange {
 		Address: exchange.Address,
 		Signature: exchange.Signature,
 		Amount: exchange.Amount,
-		Nonce: exchange.Nonce,
 	}
 }
 
@@ -41,7 +39,6 @@ func DExchangeToMExchange(exchange *Exchange) *model.Exchange {
 		Address: exchange.Address,
 		Signature: exchange.Signature,
 		Amount: exchange.Amount,
-		Nonce: exchange.Nonce,
 	}
 }
 

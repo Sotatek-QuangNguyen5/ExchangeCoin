@@ -99,20 +99,15 @@ func IntToByteArray(num int64) []byte {
     return arr
 }
 
-func GenerateSignature(addr common.Address, mess string, am int64, one int64) string {
+func GenerateSignature(addr common.Address, mess string, am string) string {
 
     message := ([]byte)(mess)
-    amount := common.BigToHash(big.NewInt(am)).Bytes()
+    a, _ := new(big.Int).SetString(am, 10)
+    amount := common.BigToHash(a).Bytes()
     address := addr.Bytes()
-    on, err := Client.PendingNonceAt(context.Background(), fromAddress)
-    if err != nil {
-        log.Fatal(err)
-    }
-    one = int64(on)
-    nonce := common.BigToHash(big.NewInt(one)).Bytes()
-    fmt.Println("Nonce reset : ", on)
 
-    hash, ethHash := PacketWithEth(address, message, amount, nonce)
+    hash, ethHash := PacketWithEth(address, message, amount)
+    fmt.Println("Amount : ", amount)
     fmt.Println("Msg Hash : ", hash.Hex())
     fmt.Println("ETH Hash : ", ethHash.Hex())
 
@@ -132,10 +127,9 @@ func GenerateSignature(addr common.Address, mess string, am int64, one int64) st
     return hexutil.Encode(signature)
 }
 
-func PacketWithEth(address []byte, message []byte, amount []byte, nonce []byte) (common.Hash, common.Hash) {
+func PacketWithEth(address []byte, message []byte, amount []byte) (common.Hash, common.Hash) {
 
-    hash := crypto.Keccak256Hash(address, message, amount, nonce)
-
+    hash := crypto.Keccak256Hash(address, message, amount)
     return hash, crypto.Keccak256Hash(
         []byte("Batman vs Joker"),
         hash.Bytes(),

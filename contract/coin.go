@@ -1,7 +1,6 @@
 package contract
 
 import (
-	
 	"bufio"
 	"fmt"
 	"math/big"
@@ -45,8 +44,8 @@ func handleChoice(choice int) {
 
 		message := utils.RandomMessage()
 		address := common.HexToAddress(utils.ReadPublicKey(2))
-		amount := rand.Int63n(1e18)
-		signature := GenerateSignature(address, message, amount, 1)
+		amount := big.NewInt(rand.Int63n(1e18))
+		signature := GenerateSignature(address, message, amount.String())
 		fmt.Println("Address : ", address)
 		fmt.Println("Message : ", message)
 		fmt.Println("Amount : ", amount)
