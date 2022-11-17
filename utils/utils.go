@@ -203,3 +203,69 @@ func ReadETHHash(number int) (string) {
 
 	return ethHash
 }
+
+func ReadAmount(number int) (string) {
+
+
+    f, err := os.Open("./text/amount.txt")
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    defer f.Close()
+
+    scanner := bufio.NewScanner(f)
+	var amount string
+    cnt := 1
+
+    for scanner.Scan() {
+
+		amount = scanner.Text()
+        if cnt == number {
+
+            break
+        }
+        cnt += 1
+    }
+
+    if err := scanner.Err(); err != nil {
+
+        log.Fatal(err)
+    }
+
+	return amount
+}
+
+func ReadMessage(number int) (string) {
+
+
+    f, err := os.Open("./text/message.txt")
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    defer f.Close()
+
+    scanner := bufio.NewScanner(f)
+	var message string
+    cnt := 1
+
+    for scanner.Scan() {
+
+		message = scanner.Text()
+        if cnt == number {
+
+            break
+        }
+        cnt += 1
+    }
+
+    if err := scanner.Err(); err != nil {
+
+        log.Fatal(err)
+    }
+
+	return message
+}

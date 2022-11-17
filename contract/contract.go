@@ -80,7 +80,7 @@ func WithdrawMoney(auth *bind.TransactOpts, receiver common.Address, message str
     }
 
     fmt.Println()
-    value := new(big.Float).Quo(new(big.Float).SetInt(tx.Value()), new(big.Float).SetFloat64(1e18))
+    value := new(big.Float).Quo(new(big.Float).SetInt(amount), new(big.Float).SetFloat64(1e18))
     fmt.Printf("You withdraw money successfully. You withdraw %v ether from contract %v !!!\n", value, MycontractAddress)
     fmt.Println("Your Transaction Hash : ", tx.Hash().Hex())
     fmt.Printf("Gas Price of Transaction : %v wei\n", tx.GasPrice())
