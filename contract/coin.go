@@ -45,7 +45,7 @@ func handleChoice(choice int) {
 	} else if choice == 5 {
 
 		message := utils.RandomMessage()
-		address := common.HexToAddress(utils.ReadPublicKey(2))
+		address := common.HexToAddress(utils.ReadPublicKey(1))
 		amount := big.NewInt(rand.Int63n(1e18))
 		signature := GenerateSignature(address, message, amount.String())
 		fmt.Println("Address : ", address)
@@ -77,6 +77,14 @@ func handleChoice(choice int) {
 		fmt.Println("Address : ", address)
 		fmt.Println("Message : ", message)
 		fmt.Println("Amount : ", amount)
+	} else if choice == 9 {
+
+		message := utils.RandomMessage()
+		address := common.HexToAddress(utils.ReadPublicKey(1))
+		signature := GenerateSignatureClient(address, message)
+		fmt.Println("Address : ", address)
+		fmt.Println("Message : ", message)
+		fmt.Println("Signature : ", signature)
 	} else {
 
 		fmt.Println("Input Invalid!!! Please enter again.")
@@ -98,6 +106,7 @@ func Control() {
 		fmt.Println("6 : Verify Signature.")
 		fmt.Println("7 : withDraw Money.")
 		fmt.Println("8 : Get MessageHash.")
+		fmt.Println("9 : Get Signature Client.")
 		fmt.Println()
 		fmt.Fscan(in, &choice)
 		handleChoice(choice)

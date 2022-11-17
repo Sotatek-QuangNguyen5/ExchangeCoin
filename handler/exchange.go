@@ -1,13 +1,14 @@
 package handler
 
 import (
-	
+
 	"net/http"
 	"servercoin/contract"
 	"servercoin/dto"
 	"servercoin/errs"
 	"servercoin/service"
 	"servercoin/utils"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/gin-gonic/gin"
 )
@@ -40,6 +41,8 @@ func (e ExchangeHandler) GetExchange() gin.HandlerFunc {
 		address := common.HexToAddress(req.Address)
 		_, ethHash := contract.PacketWithEth(address.Bytes(), []byte(req.Message))
 		clientAddress := contract.VerifySignature(ethHash, common.FromHex(req.Signature))
+		// fmt.Println(req)
+		// fmt.Println(clientAddress.Hex())
 		if clientAddress.Hex() != req.Address {
 
 			WriteRespon(ctx, http.StatusOK, gin.H{

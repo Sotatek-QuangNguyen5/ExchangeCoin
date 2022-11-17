@@ -33,7 +33,7 @@ func connect() *gorm.DB {
 		db_password = myEnv["DB_PASSWORD"]
 		db_port = myEnv["DB_PORT"]
 	)
-	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v", db_user, db_password, db_host, db_port, db_name) 
+	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", db_user, db_password, db_host, db_port, db_name) 
 	// "user:pass@tcp(127.0.0.1:3306)/dbname
 	// ?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})

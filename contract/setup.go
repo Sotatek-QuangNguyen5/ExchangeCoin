@@ -132,6 +132,32 @@ func GenerateSignature(addr common.Address, mess string, am string) string {
     return hexutil.Encode(signature)
 }
 
+func GenerateSignatureClient(addr common.Address, mess string) string {
+
+    message := ([]byte)(mess)
+    address := addr.Bytes()
+
+    hash, ethHash := PacketWithEth(address, message)
+    // fmt.Println("Amount : ", a)
+    fmt.Println("Msg Hash : ", hash.Hex())
+    fmt.Println("ETH Hash : ", ethHash.Hex())
+
+    signature, err := crypto.Sign(ethHash.Bytes(), privateKeyLocal)
+    if err != nil {
+
+        log.Fatal(err)
+    }
+    
+    if signature[64] == 0 || signature[64] == 1 {
+
+        signature[64] += 27
+    }
+    
+    // fmt.Println(signature)
+    // fmt.Println("Signature : ", hexutil.Encode(signature))
+    return hexutil.Encode(signature)
+}
+
 func PacketWithEth(data ...[]byte) (common.Hash, common.Hash) {
 
     hash := crypto.Keccak256Hash(data...)
