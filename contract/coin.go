@@ -1,6 +1,7 @@
 package contract
 
 import (
+
 	"bufio"
 	"fmt"
 	"math/big"
@@ -11,6 +12,7 @@ import (
 )
 
 var (
+
 	in = bufio.NewReader(os.Stdin)
 )
 
@@ -62,27 +64,28 @@ func handleChoice(choice int) {
 	} else if choice == 7 {
 
 		publicAddr := common.HexToAddress(utils.ReadPublicKey(2))
-		amount := big.NewInt(788787457839692041)
-		message := "u99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28mLGpj0sdzvhNhjp"
+		amount := big.NewInt(1000000000000000000)
+		message := "2smTyVsGd5Xav0yu99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28"
 		signature := common.FromHex(utils.ReadSignature(1))
 		WithdrawMoney(Auth, publicAddr, message, amount, signature)
 	} else if choice == 8 {
 
-		message := "u99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28mLGpj0sdzvhNhjp"
+		message := "2smTyVsGd5Xav0yu99ZAMPTA7z7s575klKiz9pyKl17ltLSvQmntzYlkmifsd2X28"
 		address := common.HexToAddress(utils.ReadPublicKey(2))
 		// amount := rand.Int63n(1e18)
-		GetMessageHash(address, message, big.NewInt(788787457839692041))
+		GetMessageHash(address, message, big.NewInt(1000000000000000000))
 		fmt.Println("Address : ", address)
 		fmt.Println("Message : ", message)
-		fmt.Println("Amount : ", 788787457839692041)
+		fmt.Println("Amount : ", 1000000000000000000)
 	} else {
 
 		fmt.Println("Input Invalid!!! Please enter again.")
 	}
 }
 
-func Coin() {
+func Control() {
 
+	fmt.Println("*******   Welcome to contract's control.   ********")
 	for {
 
 		var choice int
@@ -95,8 +98,9 @@ func Coin() {
 		fmt.Println("6 : Verify Signature.")
 		fmt.Println("7 : withDraw Money.")
 		fmt.Println("8 : Get MessageHash.")
+		fmt.Println()
 		fmt.Fscan(in, &choice)
 		handleChoice(choice)
-		fmt.Println()
+		fmt.Println("----------------------------------------------------------------------------------")
 	}
 }

@@ -9,4 +9,5 @@ type Exchange struct {
 	Address		string
 	Message		string
 	Amount		string
+	Withdrawn	bool		`gorm:"default:false"`
 }

@@ -4,9 +4,9 @@ pragma solidity >=0.7.0 <0.9.0;
 contract ExchangeCoin {
     
     address public creator;
-    mapping (address => bool) listReceiver;
+    mapping (bytes => bool) listReceiver;
     event eventReceiverMoney(address addr, uint256 amount);
-    event eventWithDrawMoney(address addr);
+    event eventWithDrawMoney(address addr, bytes signature);
 
     constructor() {
 
@@ -42,20 +42,19 @@ contract ExchangeCoin {
 
     function withdrawMoney(address payable receiver, string memory message, uint256 amount, bytes memory signature) public {
         
+        require(listReceiver[signature] == false, "signature expire time!!!");
+        require(receiver == msg.sender, "wrong receiver!!!");
+        require(amount <= address(this).balance, "contract is not enough money!!!");
         bytes32 messageHash = getMessageHash(receiver, message, amount);
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
         require(recoverSigner(ethSignedMessageHash, signature) == creator, "invalid signature!!!");
-        require(receiver == msg.sender, "wrong receiver!!!");
-        require(amount <= address(this).balance, "not enough money!!!");
-        require(listReceiver[msg.sender] == false, "you received money!!!");
         receiver.transfer(amount);
-        listReceiver[msg.sender] = true;
-        emit eventWithDrawMoney(receiver);
+        listReceiver[signature] = true;
+        emit eventWithDrawMoney(receiver, signature);
     }
 
     function receiveMoney() public payable {
 
-        listReceiver[msg.sender] = false;
         emit eventReceiverMoney(msg.sender, msg.value);
     }
 

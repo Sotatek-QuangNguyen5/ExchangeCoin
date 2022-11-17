@@ -13,6 +13,7 @@ type ExchangeService interface {
 	DeleteExchange(message string) (*errs.AppError)
 	GetMessage(message string) (bool, *errs.AppError)
 	CreateExchange(newExchange *dto.Exchange) (*errs.AppError)
+	UpdateUseSignature(newExchange *dto.Exchange) (*errs.AppError)
 }
 
 type DefaultExchangeService struct {
@@ -53,5 +54,11 @@ func (e DefaultExchangeService) GetMessage(message string) (bool, *errs.AppError
 func (e DefaultExchangeService) CreateExchange(newExchange *dto.Exchange) (*errs.AppError) {
 
 	err := e.repo.CreateExchange(dto.DExchangeToMExchange(newExchange))
+	return err
+}
+
+func (e DefaultExchangeService) UpdateUseSignature(newExchange *dto.Exchange) (*errs.AppError) {
+
+	err := e.repo.UpdateUseSignature(dto.DExchangeToMExchange(newExchange))
 	return err
 }

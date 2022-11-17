@@ -14,6 +14,7 @@ type ExchangeRepository interface {
 	DeleteExchange(message string) (*errs.AppError)
 	GetMessage(message string) (bool, *errs.AppError)
 	CreateExchange(newExchange *model.Exchange) (*errs.AppError)
+	UpdateUseSignature(newExchange *model.Exchange) (*errs.AppError)
 }
 
 type DefaultExchangeRepository struct {
@@ -67,6 +68,16 @@ func (e DefaultExchangeRepository) CreateExchange(newExchange *model.Exchange) (
 	if err != nil {
 
 		return errs.ErrorInsertData()
+	}
+	return nil
+}
+
+func (e DefaultExchangeRepository) UpdateUseSignature(newExchange *model.Exchange) (*errs.AppError) {
+
+	err := e.db.Model(&model.Exchange{}).Where("signature = ?", newExchange.Signature).Update("withdrawn", true).Error
+	if err != nil {
+
+		return errs.ErrorUpdateData()
 	}
 	return nil
 }

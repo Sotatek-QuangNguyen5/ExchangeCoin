@@ -1,148 +1,292 @@
 package contract
 
 import (
-
 	"fmt"
 	"log"
 	"math/big"
-    "context"
+	"servercoin/config"
+	"servercoin/dto"
+	"servercoin/exchangecoin"
+	"servercoin/repository"
+	"servercoin/service"
+	"servercoin/utils"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/ethclient"
-    "github.com/ethereum/go-ethereum"
-    "github.com/ethereum/go-ethereum/core/types"
-    "github.com/ethereum/go-ethereum/accounts/abi"
-	"servercoin/exchangecoin"
-	"servercoin/utils"
-    "strings"
-    "github.com/mitchellh/mapstructure"
 )
 
 var (
 
 	Mycontract *exchangecoin.Exchangecoin
+    MycontractAddress string
 )
 
 func CreateNewContract(client *ethclient.Client) {
 
 	contractAddress := utils.ReadContract(1)
+    MycontractAddress = contractAddress
 	address := common.HexToAddress(contractAddress)
     instance, err := exchangecoin.NewExchangecoin(address, client)
     if err != nil {
-        log.Fatal(err)
+        
+        fmt.Println()
+        log.Println("Error create contract. Please check your contract's address!!!")
+        fmt.Println()
+        return
     }
 	Mycontract = instance
+    fmt.Println()
+    fmt.Printf("Create contract at address %v successfully!!!\n", contractAddress)
+    fmt.Println()
 }
 
 func Deploy(auth *bind.TransactOpts, client *ethclient.Client) {
 
     address, tx, instance, err := exchangecoin.DeployExchangecoin(auth, client)
     if err != nil {
-        log.Fatal(err)
-    }
 
-    fmt.Println(address.Hex())
-    fmt.Println(tx.Hash().Hex())
-	Mycontract = instance
+        fmt.Println()
+        log.Println("Error deploy contract. Please check your contract's source code!!!")
+        fmt.Println()
+        return
+    }
+    Mycontract = instance
+    fmt.Println()
+    fmt.Println("Deploy successfully. Your address of smart contract : ", address.Hex())
+    fmt.Println("Your transaction hash : ", tx.Hash().Hex())
+    fmt.Printf("Gas Price of Transaction : %v wei\n", tx.GasPrice())
+    fmt.Println()
+    MycontractAddress = address.Hex()
 }
 
 func WithdrawMoney(auth *bind.TransactOpts, receiver common.Address, message string, amount *big.Int, signature []byte) {
 
-    res, err := Mycontract.WithdrawMoney(auth, receiver, message, amount, signature)
+    if Mycontract == nil {
+
+        fmt.Println()
+        fmt.Println("You have not created a contract!!!")
+        fmt.Println()
+        return
+    }
+    tx, err := Mycontract.WithdrawMoney(auth, receiver, message, amount, signature)
     if err != nil {
 
-        log.Fatal("Error Verify : ", err)
+        fmt.Println()
+        log.Printf("Error Withdraw Money : %v. Please check your signature and data!!!\n", err)
+        fmt.Println()
+        return
     }
-    fmt.Println("Result : ", res.Hash().Hex())
+
+    fmt.Println()
+    value := new(big.Float).Quo(new(big.Float).SetInt(tx.Value()), new(big.Float).SetFloat64(1e18))
+    fmt.Printf("You withdraw money successfully. You withdraw %v ether from contract %v !!!\n", value, MycontractAddress)
+    fmt.Println("Your Transaction Hash : ", tx.Hash().Hex())
+    fmt.Printf("Gas Price of Transaction : %v wei\n", tx.GasPrice())
+    fmt.Println()
 }
 
 func GetBalance() {
 
+    if Mycontract == nil {
+
+        fmt.Println()
+        fmt.Println("You have not created a contract!!!")
+        fmt.Println()
+        return
+    }
     balance, err := Mycontract.GetBalance(&bind.CallOpts{})
     if err != nil {
-        log.Fatal(err)
+
+        fmt.Println()
+        log.Printf("Error getBalance of contract : %v. Please check your contract's address!!!\n", err)
+        fmt.Println()
+        return;
     }
 
+    fmt.Println()
     fmt.Printf("Balance of Contract : %v wei\n", balance)
     balanceEther := new(big.Float)
     fmt.Printf("Balance of Contract : %v ether\n", balanceEther.Quo(new(big.Float).SetInt(balance), new(big.Float).SetFloat64(1e18)))
+    fmt.Println()
 }
-
 
 func ReceiveBalance(auth *bind.TransactOpts) {
 
+    if Mycontract == nil {
+
+        fmt.Println()
+        fmt.Println("You have not created a contract!!!")
+        fmt.Println()
+        return
+    }
     tx, err := Mycontract.ReceiveMoney(auth)
     if err != nil {
-        log.Fatal(err)
+
+        fmt.Println()
+        log.Printf("Error send balance to contract : %v. Please check your contract's address!!!\n", err)
+        fmt.Println()
+        return
     }
 
+    fmt.Println()
+    value := new(big.Float).Quo(new(big.Float).SetInt(tx.Value()), new(big.Float).SetFloat64(1e18))
+    fmt.Printf("You sent %v ether to contract %v!!!\n", value, MycontractAddress)
     fmt.Println("Transaction Hash :", tx.Hash().Hex())
+    fmt.Printf("Transaction Value : %v ether\n", value)
+    fmt.Println("Transaction Nonce : ", tx.Nonce())
+    fmt.Printf("Gas Price of Transaction : %v wei\n", tx.GasPrice())
+    fmt.Println()
 }
 
-func ReadEventLog(client *ethclient.Client) {
+func GetMessageHash(receiver common.Address, message string, amount *big.Int) {
 
-    addr := utils.ReadContract(1)
-    contractAddress := common.HexToAddress(addr)
-    query := ethereum.FilterQuery {
+    if Mycontract == nil {
 
-        Addresses: []common.Address{contractAddress},
+        fmt.Println()
+        fmt.Println("You have not created a contract!!!")
+        fmt.Println()
+        return
     }
-
-    exchangecoin.ExchangecoinEventReceiverMoney
-    logs := make(chan types.Log)
-    sub, err := client.SubscribeFilterLogs(context.Background(), query, logs)
+    mess, err := Mycontract.GetMessageHash(&bind.CallOpts{}, receiver, message, amount)
     if err != nil {
 
-        log.Fatal(err)
+        fmt.Println()
+        log.Printf("Error get MessageHash : %v. Please check your contract's address!!!\n", err)
+        fmt.Println()
+        return
     }
+    messHash := mess[:]
+    fmt.Println()
+    fmt.Println("Message Hash : ", common.BytesToHash(messHash).Hex())
+    fmt.Println()
+}
 
-    contractAbi, err := abi.JSON(strings.NewReader(string(exchangecoin.ExchangecoinABI)))
+func CheckMyContract() {
+
+    for {
+
+        if Mycontract != nil {
+
+            return;
+        }
+    }
+}
+
+func ReadEventReceiverMoney(client *ethclient.Client) {
+
+    CheckMyContract()
+    logs := make(chan *exchangecoin.ExchangecoinEventReceiverMoney)
+    sub, err := Mycontract.WatchEventReceiverMoney(&bind.WatchOpts{}, logs)
     if err != nil {
-        log.Fatal(err)
+
+        fmt.Println()
+        log.Println("Error subcribe event receive money : ", err)
+        fmt.Println()
+        return
     }
 
-    eventData := struct {
-        
-        addr common.Address
-        amount *big.Int
-    }{}
+    fmt.Println()
+    fmt.Printf("Listening Event Receive Money at contract %v .....\n", MycontractAddress)
+    fmt.Println()
        
     for {
     
         select {
             
             case err := <-sub.Err():
-                log.Fatal(err)
+                fmt.Println()
+                log.Println("Event Receive Money : ", err)
+                fmt.Println()
             case vLog := <-logs:
-                //fmt.Println("This is Event Log : ", vLog.Topics) // pointer to event log
-                //Topics(vLog.Topics)
-                event, err := contractAbi.Unpack("eventReceiverMoney", vLog.Data)
-                if err != nil {
-                    log.Fatal(err)
-                }
-                mapstructure.Decode(event, &eventData)
-                fmt.Println(eventData.addr)
-                fmt.Println(eventData.addr)
-                fmt.Println(eventData.amount)
+                fmt.Println()
+                fmt.Println("This is new Event Receive Money!!!")
+                balanceEther := new(big.Float).Quo(new(big.Float).SetInt(vLog.Amount), new(big.Float).SetFloat64(1e18))
+                fmt.Printf("Address %v sent %v ether to contract!!!\n", vLog.Addr.Hex(), balanceEther)
+                fmt.Println()
+                SaveEventReceiveMoney(vLog.Addr, vLog.Amount.String())
         }
     }
 }
 
-func Topics(topics []common.Hash) {
+func ReadEventWithDrawMoney(client *ethclient.Client) {
 
-    for i, v := range topics {
+    CheckMyContract()
+    logs := make(chan *exchangecoin.ExchangecoinEventWithDrawMoney)
+    sub, err := Mycontract.WatchEventWithDrawMoney(&bind.WatchOpts{}, logs)
+    if err != nil {
 
-        fmt.Println("Topic ", i, " : ", v.Hex())
+        fmt.Println()
+        log.Println("Error subcribe event withDraw money : ", err)
+        return
+    }
+
+    fmt.Println()
+    fmt.Printf("Listening Event Withdraw Money at contract %v .....\n", MycontractAddress)
+    fmt.Println()
+
+    for {
+
+        select {
+
+            case err := <-sub.Err():
+                fmt.Println()
+                log.Println("Event With Draw Money : ", err)
+                fmt.Println()
+            case vlog := <-logs:
+                fmt.Println()
+                fmt.Println("This is new Event WithDraw Money!!!")
+                fmt.Printf("Address %v withdraw money!!!\n", vlog.Addr.Hex())
+                fmt.Println()
+                SaveEventWithdrawMoney(vlog.Addr, vlog.Signature)
+        }
     }
 }
 
-func GetMessageHash(receiver common.Address, message string, amount *big.Int) {
+func SaveEventReceiveMoney(address common.Address, amount string) {
 
-    mess, err := Mycontract.GetMessageHash(&bind.CallOpts{}, receiver, message, amount)
+    myService := service.NewExchangeService(repository.NewExchangeRepository(config.DB))
+    message := utils.RandomMessage()
+    data := &dto.Exchange{
+
+        Address: address.Hex(),
+        Amount: amount,
+        Message: message,
+        Signature: GenerateSignature(address, message, amount),
+        Withdrawn: false,
+    }
+    err := myService.CreateExchange(data)
     if err != nil {
 
-        log.Fatal("Error get MessageHash : ", err)
+        fmt.Println()
+        log.Println(err.Message)
+        return
     }
-    messHash := mess[:]
-    fmt.Println("Message Hash : ", common.BytesToHash(messHash).Hex())
+    fmt.Println()
+    fmt.Printf("Saved Transaction Receive Money Address %v to Database.\n", address.Hex())
+    fmt.Println()
+}
+
+func SaveEventWithdrawMoney(address common.Address, signature []byte) {
+
+    myService := service.NewExchangeService(repository.NewExchangeRepository(config.DB))
+    message := utils.RandomMessage()
+    data := &dto.Exchange{
+
+        Address: address.Hex(),
+        Message: message,
+        Signature: hexutil.Encode(signature),
+        Withdrawn: true,
+    }
+    err := myService.UpdateUseSignature(data)
+    if err != nil {
+
+        fmt.Println()
+        log.Println(err.Message)
+        return
+    }
+    fmt.Println()
+    fmt.Printf("Saved Transaction Withdraw Money of Address %v to Database.\n", address.Hex())
+    fmt.Println()
 }

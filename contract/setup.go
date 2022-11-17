@@ -17,6 +17,7 @@ import (
 )
 
 var (
+    
 	Client *ethclient.Client
 	Auth   *bind.TransactOpts
     fromAddress common.Address
@@ -33,7 +34,7 @@ func Init() {
     Client = client
     // fmt.Println("URL rpc : ", urlrpc)
 
-	privateKeyString := utils.ReadPrivateKey(2)
+	privateKeyString := utils.ReadPrivateKey(1)
 
     privateKey, err := crypto.HexToECDSA(privateKeyString)
     if err != nil {
@@ -83,7 +84,10 @@ func SetNonce() {
 
     nonce, err := Client.PendingNonceAt(context.Background(), fromAddress)
     if err != nil {
-        log.Fatal(err)
+
+        fmt.Println()
+        log.Printf("Error set nonce for your address : %v. Please check your privateKey or you have not created a client!!!\n", err)
+        return
     }
     Auth.Nonce = big.NewInt(int64(nonce))
 }
@@ -108,7 +112,7 @@ func GenerateSignature(addr common.Address, mess string, am string) string {
     address := addr.Bytes()
 
     hash, ethHash := PacketWithEth(address, message, amount)
-    fmt.Println("Amount : ", amount)
+    // fmt.Println("Amount : ", a)
     fmt.Println("Msg Hash : ", hash.Hex())
     fmt.Println("ETH Hash : ", ethHash.Hex())
 
@@ -128,9 +132,9 @@ func GenerateSignature(addr common.Address, mess string, am string) string {
     return hexutil.Encode(signature)
 }
 
-func PacketWithEth(address []byte, message []byte, amount []byte) (common.Hash, common.Hash) {
+func PacketWithEth(data ...[]byte) (common.Hash, common.Hash) {
 
-    hash := crypto.Keccak256Hash(address, message, amount)
+    hash := crypto.Keccak256Hash(data...)
     return hash, crypto.Keccak256Hash(
         []byte("Batman vs Joker"),
         hash.Bytes(),
