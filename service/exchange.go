@@ -1,7 +1,9 @@
 package service
 
 import (
-
+	"fmt"
+	"log"
+	"servercoin/config"
 	"servercoin/dto"
 	"servercoin/errs"
 	"servercoin/repository"
@@ -14,6 +16,25 @@ type ExchangeService interface {
 	GetMessage(message string) (bool, *errs.AppError)
 	CreateExchange(newExchange *dto.Exchange) (*errs.AppError)
 	UpdateUseSignature(newExchange *dto.Exchange) (*errs.AppError)
+	SaveEventReceiveMoney(newExchange *dto.Exchange)
+	SaveEventWithdrawMoney(newExchange *dto.Exchange)
+}
+
+var (
+
+	Serv ExchangeService
+)
+
+func Init() {
+
+	for {
+
+		if config.DB != nil {
+
+			break
+		}
+	}
+	Serv = NewExchangeService(repository.NewExchangeRepository(config.DB))
 }
 
 type DefaultExchangeService struct {
@@ -61,4 +82,32 @@ func (e DefaultExchangeService) UpdateUseSignature(newExchange *dto.Exchange) (*
 
 	err := e.repo.UpdateUseSignature(dto.DExchangeToMExchange(newExchange))
 	return err
+}
+
+func (e DefaultExchangeService) SaveEventReceiveMoney(newExchange *dto.Exchange) {
+
+    err := e.CreateExchange(newExchange)
+    if err != nil {
+
+        fmt.Println()
+        log.Println(err.Message)
+        return
+    }
+    fmt.Println()
+    fmt.Printf("Saved Transaction Receive Money Address %v to Database.\n", newExchange.Address)
+    fmt.Println()
+}
+
+func (e DefaultExchangeService) SaveEventWithdrawMoney(newExchange *dto.Exchange) {
+
+    err := e.UpdateUseSignature(newExchange)
+    if err != nil {
+
+        fmt.Println()
+        log.Println(err.Message)
+        return
+    }
+    fmt.Println()
+    fmt.Printf("Saved Transaction Withdraw Money of Address %v to Database.\n", newExchange.Address)
+    fmt.Println()
 }

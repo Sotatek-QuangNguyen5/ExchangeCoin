@@ -1,20 +1,18 @@
 package contract
 
 import (
+
 	"fmt"
 	"log"
 	"math/big"
-	"servercoin/config"
-	"servercoin/dto"
 	"servercoin/exchangecoin"
-	"servercoin/repository"
-	"servercoin/service"
 	"servercoin/utils"
-
+    "servercoin/dto"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/ethclient"
+    "servercoin/service"
+    "github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 var (
@@ -205,7 +203,17 @@ func ReadEventReceiverMoney(client *ethclient.Client) {
                 balanceEther := new(big.Float).Quo(new(big.Float).SetInt(vLog.Amount), new(big.Float).SetFloat64(1e18))
                 fmt.Printf("Address %v sent %v ether to contract!!!\n", vLog.Addr.Hex(), balanceEther)
                 fmt.Println()
-                SaveEventReceiveMoney(vLog.Addr, vLog.Amount.String())
+
+                message := utils.RandomMessage()
+                data := &dto.Exchange{
+            
+                    Address: vLog.Addr.Hex(),
+                    Amount: vLog.Amount.String(),
+                    Message: message,
+                    Signature: GenerateSignature(vLog.Addr, message, vLog.Amount.String()),
+                    Withdrawn: false,
+                }
+                service.Serv.SaveEventReceiveMoney(data)
         }
     }
 }
@@ -239,54 +247,15 @@ func ReadEventWithDrawMoney(client *ethclient.Client) {
                 fmt.Println("This is new Event WithDraw Money!!!")
                 fmt.Printf("Address %v withdraw money!!!\n", vlog.Addr.Hex())
                 fmt.Println()
-                SaveEventWithdrawMoney(vlog.Addr, vlog.Signature)
+
+                data := &dto.Exchange{
+
+                    Address: vlog.Addr.Hex(),
+                    Message: "",
+                    Signature: hexutil.Encode(vlog.Signature),
+                    Withdrawn: true,
+                }
+                service.Serv.SaveEventWithdrawMoney(data)
         }
     }
-}
-
-func SaveEventReceiveMoney(address common.Address, amount string) {
-
-    myService := service.NewExchangeService(repository.NewExchangeRepository(config.DB))
-    message := utils.RandomMessage()
-    data := &dto.Exchange{
-
-        Address: address.Hex(),
-        Amount: amount,
-        Message: message,
-        Signature: GenerateSignature(address, message, amount),
-        Withdrawn: false,
-    }
-    err := myService.CreateExchange(data)
-    if err != nil {
-
-        fmt.Println()
-        log.Println(err.Message)
-        return
-    }
-    fmt.Println()
-    fmt.Printf("Saved Transaction Receive Money Address %v to Database.\n", address.Hex())
-    fmt.Println()
-}
-
-func SaveEventWithdrawMoney(address common.Address, signature []byte) {
-
-    myService := service.NewExchangeService(repository.NewExchangeRepository(config.DB))
-    message := utils.RandomMessage()
-    data := &dto.Exchange{
-
-        Address: address.Hex(),
-        Message: message,
-        Signature: hexutil.Encode(signature),
-        Withdrawn: true,
-    }
-    err := myService.UpdateUseSignature(data)
-    if err != nil {
-
-        fmt.Println()
-        log.Println(err.Message)
-        return
-    }
-    fmt.Println()
-    fmt.Printf("Saved Transaction Withdraw Money of Address %v to Database.\n", address.Hex())
-    fmt.Println()
 }

@@ -1,19 +1,23 @@
 package router
 
 import (
-	"servercoin/config"
-	"servercoin/handler"
-	"servercoin/repository"
-	"servercoin/service"
 
+	"servercoin/handler"
+	"servercoin/service"
 	"github.com/gin-gonic/gin"
+)
+
+var (
+
+	Handlers handler.ExchangeHandler
 )
 
 func ExchangeRouter(router *gin.Engine) {
 
-	h := handler.NewExchangeHandler(service.NewExchangeService(repository.NewExchangeRepository(config.DB)))
-	router.GET("/signature", h.GetExchange())
-	router.POST("/signature", h.CreateExchange())
+	service.Init()
+	Handlers = handler.NewExchangeHandler(service.Serv)
+	router.GET("/signature", Handlers.GetExchange())
+	router.POST("/signature", Handlers.CreateExchange())
 	router.GET("/", func(ctx *gin.Context) {
 
 		ctx.JSON(200, gin.H{
