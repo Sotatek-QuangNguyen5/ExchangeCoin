@@ -67,13 +67,13 @@ func handleChoice(choice int) {
 		amount, _ := new(big.Int).SetString(utils.ReadAmount(1), 10)
 		message := utils.ReadMessage(1)
 		signature := common.FromHex(utils.ReadSignature(1))
-		WithdrawMoney(Auth, publicAddr, message, amount, signature)
+		WithdrawMoney(Auth, publicAddr, message, amount, big.NewInt(11155111), signature)
 	} else if choice == 8 {
 
 		message := utils.ReadMessage(1)
 		address := common.HexToAddress(utils.ReadPublicKey(2))
 		amount, _ := new(big.Int).SetString(utils.ReadAmount(1), 10)
-		GetMessageHash(address, message, amount)
+		GetMessageHash(address, message, amount, big.NewInt(11155111))
 		fmt.Println("Address : ", address)
 		fmt.Println("Message : ", message)
 		fmt.Println("Amount : ", amount)

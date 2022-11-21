@@ -59,7 +59,7 @@ func Deploy(auth *bind.TransactOpts, client *ethclient.Client) {
     MycontractAddress = address.Hex()
 }
 
-func WithdrawMoney(auth *bind.TransactOpts, receiver common.Address, message string, amount *big.Int, signature []byte) {
+func WithdrawMoney(auth *bind.TransactOpts, receiver common.Address, message string, amount *big.Int, network *big.Int, signature []byte) {
 
     if Mycontract == nil {
 
@@ -68,7 +68,7 @@ func WithdrawMoney(auth *bind.TransactOpts, receiver common.Address, message str
         fmt.Println()
         return
     }
-    tx, err := Mycontract.WithdrawMoney(auth, receiver, message, amount, signature)
+    tx, err := Mycontract.WithdrawMoney(auth, receiver, message, amount, network, signature)
     if err != nil {
 
         fmt.Println()
@@ -138,7 +138,7 @@ func ReceiveBalance(auth *bind.TransactOpts) {
     fmt.Println()
 }
 
-func GetMessageHash(receiver common.Address, message string, amount *big.Int) {
+func GetMessageHash(receiver common.Address, message string, amount *big.Int, network *big.Int) {
 
     if Mycontract == nil {
 
@@ -147,7 +147,7 @@ func GetMessageHash(receiver common.Address, message string, amount *big.Int) {
         fmt.Println()
         return
     }
-    mess, err := Mycontract.GetMessageHash(&bind.CallOpts{}, receiver, message, amount)
+    mess, err := Mycontract.GetMessageHash(&bind.CallOpts{}, receiver, message, amount, network)
     if err != nil {
 
         fmt.Println()

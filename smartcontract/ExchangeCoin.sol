@@ -5,17 +5,18 @@ contract ExchangeCoin {
     
     address public creator;
     mapping (bytes => bool) listReceiver;
-    event eventReceiverMoney(address addr, uint256 amount);
-    event eventWithDrawMoney(address addr, bytes signature);
+    uint256 public networkId = 11155111;
+    event eventReceiverMoney(address addr, uint256 amount, uint256 network);
+    event eventWithDrawMoney(address addr, bytes signature, uint256 network);
 
     constructor() {
 
         creator = msg.sender;
     }
 
-    function getMessageHash(address receiver, string memory message, uint256 amount) public pure returns(bytes32) {
+    function getMessageHash(address receiver, string memory message, uint256 amount, uint256 network) public pure returns(bytes32) {
 
-        return keccak256(abi.encodePacked(receiver, message, amount));
+        return keccak256(abi.encodePacked(receiver, message, amount, network));
     }
 
     function getEthSignedMessageHash(bytes32 messageHash) public pure returns(bytes32) {
@@ -40,22 +41,23 @@ contract ExchangeCoin {
         return ecrecover(ethSignedMessageHash, v, r, s);
     }
 
-    function withdrawMoney(address payable receiver, string memory message, uint256 amount, bytes memory signature) public {
+    function withdrawMoney(address payable receiver, string memory message, uint256 amount, uint256 network, bytes memory signature) public {
         
+        require(networkId == network, "Wrong networkID!!!");
         require(listReceiver[signature] == false, "signature expire time!!!");
         require(receiver == msg.sender, "wrong receiver!!!");
         require(amount <= address(this).balance, "contract is not enough money!!!");
-        bytes32 messageHash = getMessageHash(receiver, message, amount);
+        bytes32 messageHash = getMessageHash(receiver, message, amount, network);
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
         require(recoverSigner(ethSignedMessageHash, signature) == creator, "invalid signature!!!");
         receiver.transfer(amount);
         listReceiver[signature] = true;
-        emit eventWithDrawMoney(receiver, signature);
+        emit eventWithDrawMoney(receiver, signature, network);
     }
 
     function receiveMoney() public payable {
 
-        emit eventReceiverMoney(msg.sender, msg.value);
+        emit eventReceiverMoney(msg.sender, msg.value, networkId);
     }
 
     function getBalance() public view returns(uint256) {
